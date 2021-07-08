@@ -1,11 +1,8 @@
 import React from "react";
+import AppRouter from "./components/AppRouter";
 
 const App: React.FC = function () {
-  return (
-    <div className="App">
-      <h1>Hello World!</h1>
-    </div>
-  );
+  return <AppRouter />;
 };
 
 export default App;
