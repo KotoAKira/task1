@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.1",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -12,6 +15,7 @@
     "@types/react-dom": "^17.0.8",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
+    "@types/redux-actions": "^2.6.2",
     "firebase": "^8.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -20,7 +24,9 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
+    "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
   },
@@ -52,6 +58,8 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.0.1",
+    "@typescript-eslint/parser": "4.0.1",
     "eslint": "^7.30.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-node": "^4.1.0",
@@ -63,7 +71,6 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^2.3.2",
-    "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.0.1"
+    "redux-devtools-extension": "^2.13.9"
   }
 }
