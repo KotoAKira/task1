@@ -1,17 +1,19 @@
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter,
   Switch,
   Route,
   Redirect,
   useHistory,
+  BrowserRouter,
+  useLocation,
 } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "../routes";
 import { RouteType } from "../types/routesType";
 import { MAIN_ROUTE } from "../utils/consts";
 import { ConfirmPage } from "../pages/Confirm/ConfirmPage";
 import Spinner from "./Spinner/Spinner";
+import Navbar from "./Navbar/Navbar";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();
@@ -20,7 +22,6 @@ const AppRouter: React.FC = function () {
     initializing: true,
     shouldConfirm: false,
   });
-
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged((user) => {
@@ -31,14 +32,14 @@ const AppRouter: React.FC = function () {
               initializing: false,
               shouldConfirm: false,
             });
-            console.log("Ne nado");
+            console.log("verified");
           } else {
             setAuthState({
               authenticated: false,
               initializing: false,
               shouldConfirm: true,
             });
-            console.log("nado");
+            console.log("not verified");
           }
         } else {
           setAuthState({
@@ -46,7 +47,6 @@ const AppRouter: React.FC = function () {
             initializing: false,
             shouldConfirm: false,
           });
-          console.log("Net usera");
         }
       }),
     [setAuthState, history]

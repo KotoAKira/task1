@@ -45,7 +45,8 @@ export const signIn =
             history.push("/confirm");
             user.sendEmailVerification();
           } else {
-            history.push("/main");
+            history.push("/");
+            window.location.reload();
           }
         }
       })

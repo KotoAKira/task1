@@ -8,11 +8,10 @@ import useStyles from "./style";
 
 // eslint-disable-next-line import/prefer-default-export
 export const ConfirmPage = (): JSX.Element => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-  const handleSignOut = () => {
-    dispatch(signOut(history));
+  const handleSignIn = () => {
+    history.push("/login");
   };
   return (
     <div className={classes.container}>
@@ -21,7 +20,7 @@ export const ConfirmPage = (): JSX.Element => {
       </Typography>
       <div>
         <Button
-          onClick={handleSignOut}
+          onClick={handleSignIn}
           size="small"
           variant="outlined"
           color="primary"
