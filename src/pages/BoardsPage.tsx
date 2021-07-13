@@ -1,7 +1,13 @@
 import React from "react";
+import Navbar from "../components/Navbar/Navbar";
 
 const BoardsPage: React.FC = function () {
-  return <div>Boards Page</div>;
+  return (
+    <>
+      <Navbar />
+      boards page
+    </>
+  );
 };
 
 export default BoardsPage;

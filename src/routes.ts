@@ -6,11 +6,11 @@ import {
   REGISTRATION_ROUTE,
 } from "./utils/consts";
 import { RouteType } from "./types/routesType";
-import LoginPage from "./pages/LoginPage";
-import RegistrationPage from "./pages/RegistrationPage";
+import LoginPage from "./pages/Login/LoginPage";
+import RegistrationPage from "./pages/Registration/RegistrationPage";
 import BoardPage from "./pages/BoardPage";
 import BoardsPage from "./pages/BoardsPage";
-import MainPage from "./pages/MainPage";
+import MainPage from "./pages/Main/MainPage";
 
 export const publicRoutes: RouteType[] = [
   {
