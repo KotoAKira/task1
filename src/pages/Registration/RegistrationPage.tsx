@@ -21,31 +21,20 @@ const RegistrationPage: React.FC = function () {
   const history = useHistory();
   const registerError = useSelector(selectRegisterError);
 
-  const [email, setEmail] = useState<string>("");
-  const [pass, setPass] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [secondName, setSecondName] = useState<string>("");
-
-  // обработчики input'ов
-  const emailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPass(event.target.value);
-  };
-
-  const nameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const secondNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSecondName(event.target.value);
-  };
-  // обработчик кнопки
-  const buttonHandler = (event: React.FormEvent): void => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { firstName, lastName, password, email } = event.target;
     event.preventDefault();
-    dispatch(register(email, pass, name, secondName, history));
+    dispatch(
+      register(
+        email.value,
+        password.value,
+        firstName.value,
+        lastName.value,
+        history
+      )
+    );
   };
 
   return (
@@ -58,7 +47,7 @@ const RegistrationPage: React.FC = function () {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={submitHandler}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -69,9 +58,8 @@ const RegistrationPage: React.FC = function () {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                inputProps={{ maxLength: 20 }}
                 autoFocus
-                value={name}
-                onChange={nameHandler}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -83,8 +71,7 @@ const RegistrationPage: React.FC = function () {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                value={secondName}
-                onChange={secondNameHandler}
+                inputProps={{ maxLength: 20 }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,8 +83,6 @@ const RegistrationPage: React.FC = function () {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                value={email}
-                onChange={emailHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,8 +95,6 @@ const RegistrationPage: React.FC = function () {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={pass}
-                onChange={passwordHandler}
               />
             </Grid>
             {registerError && (
@@ -126,7 +109,6 @@ const RegistrationPage: React.FC = function () {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={buttonHandler}
           >
             Sign Up
           </Button>
