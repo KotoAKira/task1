@@ -6,53 +6,60 @@ import {
   Redirect,
   useHistory,
   BrowserRouter,
-  useLocation,
 } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { privateRoutes, publicRoutes } from "../routes";
 import { RouteType } from "../types/routesType";
 import { MAIN_ROUTE } from "../utils/consts";
 import { ConfirmPage } from "../pages/Confirm/ConfirmPage";
 import Spinner from "./Spinner/Spinner";
-import Navbar from "./Navbar/Navbar";
+import { selectLoginIsLoading } from "../store/selectors/auth";
+import {
+  authenticatingAction,
+  errorAuthenticatingAction,
+  successAuthenticatingAction,
+} from "../store/actions/auth";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();
+  const isLoading = useSelector(selectLoginIsLoading);
+  const dispatch = useDispatch();
   const [authentication, setAuthState] = useState({
     authenticated: false,
     initializing: true,
     shouldConfirm: false,
   });
-  useEffect(
-    () =>
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          if (user.emailVerified) {
-            setAuthState({
-              authenticated: true,
-              initializing: false,
-              shouldConfirm: false,
-            });
-            console.log("verified");
-          } else {
-            setAuthState({
-              authenticated: false,
-              initializing: false,
-              shouldConfirm: true,
-            });
-            console.log("not verified");
-          }
+  useEffect(() => {
+    dispatch(authenticatingAction());
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (user.emailVerified) {
+          setAuthState({
+            authenticated: true,
+            initializing: false,
+            shouldConfirm: false,
+          });
+          dispatch(successAuthenticatingAction());
         } else {
           setAuthState({
             authenticated: false,
             initializing: false,
-            shouldConfirm: false,
+            shouldConfirm: true,
           });
+          dispatch(errorAuthenticatingAction());
         }
-      }),
-    [setAuthState, history]
-  );
+      } else {
+        setAuthState({
+          authenticated: false,
+          initializing: false,
+          shouldConfirm: false,
+        });
+        dispatch(errorAuthenticatingAction());
+      }
+    });
+  }, [setAuthState, history]);
 
-  if (authentication.initializing) {
+  if (authentication.initializing || isLoading) {
     return <Spinner />;
   }
 

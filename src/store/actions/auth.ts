@@ -13,6 +13,10 @@ export enum AuthActionTypes {
   SIGNING_OUT = "[Auth] SIGNING_OUT",
   SUCCESS_SIGN_OUT = "[Auth] SUCCESS_SIGN_OUT",
   ERROR_SIGN_OUT = "[Auth] ERROR_SIGN_OUT",
+
+  AUTHENTICATING = "[Auth] AUTHENTICATING",
+  SUCCESS_AUTHENTICATING = "[Auth] SUCCESS_AUTHENTICATING",
+  ERROR_AUTHENTICATING = "[Auth] ERROR_AUTHENTICATING",
 }
 
 export const signingInAction = createAction(AuthActionTypes.SIGNING_IN);
@@ -38,4 +42,14 @@ export const successSignOutAction = createAction(
 export const errorSignOutAction = createAction(
   AuthActionTypes.ERROR_SIGN_OUT,
   (payload: { error: string }) => payload
+);
+
+export const authenticatingAction = createAction(
+  AuthActionTypes.AUTHENTICATING
+);
+export const successAuthenticatingAction = createAction(
+  AuthActionTypes.SUCCESS_AUTHENTICATING
+);
+export const errorAuthenticatingAction = createAction(
+  AuthActionTypes.ERROR_AUTHENTICATING
 );

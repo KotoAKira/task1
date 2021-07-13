@@ -9,7 +9,7 @@ import { RouteType } from "./types/routesType";
 import LoginPage from "./pages/Login/LoginPage";
 import RegistrationPage from "./pages/Registration/RegistrationPage";
 import BoardPage from "./pages/BoardPage";
-import BoardsPage from "./pages/BoardsPage";
+import BoardsPage from "./pages/Boards/BoardsPage";
 import MainPage from "./pages/Main/MainPage";
 
 export const publicRoutes: RouteType[] = [

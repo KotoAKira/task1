@@ -16,3 +16,8 @@ export const selectLoginIsLoading = createSelector(
   authState,
   (state) => state.isLoading
 );
+
+export const selectAuthenticated = createSelector(
+  authState,
+  (state) => state.authenticated
+);

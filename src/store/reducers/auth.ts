@@ -6,6 +6,7 @@ export interface State {
   signInError: string;
   registerError: string;
   signOutError: string;
+  authenticated: boolean;
   isLoading: boolean;
 }
 
@@ -13,6 +14,7 @@ const initialState = {
   signInError: "",
   registerError: "",
   signOutError: "",
+  authenticated: false,
   isLoading: false,
 };
 
@@ -45,6 +47,20 @@ export const reducer = handleActions<State>(
       ...state,
       signInError: action.payload,
       isLoading: false,
+    }),
+    [AuthActionTypes.AUTHENTICATING]: (state: State) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [AuthActionTypes.SUCCESS_AUTHENTICATING]: (state: State) => ({
+      ...state,
+      isLoading: false,
+      authenticated: true,
+    }),
+    [AuthActionTypes.AUTHENTICATING]: (state: State) => ({
+      ...state,
+      isLoading: false,
+      authenticated: false,
     }),
   },
   initialState
