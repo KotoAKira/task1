@@ -7,11 +7,13 @@ export interface State {
   boards: {
     [id: string]: BoardI;
   };
+  currentBoardId: string | null;
   isLoading: boolean;
 }
 
 const initialState = {
   boards: {},
+  currentBoardId: null,
   isLoading: false,
 };
 
@@ -90,6 +92,22 @@ export const reducer = handleActions<State>(
       isLoading: false,
     }),
     [BoardActionTypes.ERROR_FETCH_BOARDS]: (state: State) => ({
+      ...state,
+      isLoading: false,
+    }),
+    [BoardActionTypes.SET_CURRENT_BOARD]: (state: State) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [BoardActionTypes.SUCCESS_SET_CURRENT_BOARD]: (
+      state: State,
+      action: AnyAction
+    ) => ({
+      ...state,
+      currentBoardId: action.payload,
+      isLoading: false,
+    }),
+    [BoardActionTypes.ERROR_SET_CURRENT_BOARD]: (state: State) => ({
       ...state,
       isLoading: false,
     }),

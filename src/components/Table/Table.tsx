@@ -14,6 +14,7 @@ import {
   deleteBoard,
   fetchBoards,
 } from "../../store/thunks/boards";
+import { successSetCurrentBoardAction } from "../../store/actions/boards";
 
 const Table = function () {
   const classes = useStyles();
@@ -34,8 +35,9 @@ const Table = function () {
     setOpen(false);
   };
   // table
-  const clickHandler = () => {
-    alert("redirect");
+  const clickHandler = (boardId: string) => () => {
+    history.push("/board");
+    dispatch(successSetCurrentBoardAction(boardId));
   };
 
   const handleAdd = (boardName: string) => () => {
@@ -78,7 +80,7 @@ const Table = function () {
         {Object.entries(boards).map(([key, value]) => {
           if (value.managerUid === userUid) {
             return (
-              <tr onClick={clickHandler} key={key}>
+              <tr onClick={clickHandler(key)} key={key}>
                 <td className={classes.td}>{value.boardName}</td>
                 <td className={classes.td}>{value.managerName}</td>
                 <td className={classes.td}>

@@ -18,6 +18,10 @@ export enum BoardActionTypes {
   DELETE_BOARD = "[Board] DELETE_BOARD",
   SUCCESS_DELETE_BOARD = "[Board] SUCCESS_DELETE_BOARD",
   ERROR_DELETE_BOARD = "[Board] ERROR_DELETE_BOARD",
+
+  SET_CURRENT_BOARD = "[Board] SET_CURRENT_BOARD",
+  SUCCESS_SET_CURRENT_BOARD = "[Board] SUCCESS_SET_CURRENT_BOARD",
+  ERROR_SET_CURRENT_BOARD = "[Board] ERROR_SET_CURRENT_BOARD",
 }
 
 export const fetchBoardsAction = createAction(BoardActionTypes.FETCH_BOARDS);
@@ -54,4 +58,15 @@ export const successDeleteBoardAction = createAction(
 );
 export const errorDeleteBoardAction = createAction(
   BoardActionTypes.ERROR_DELETE_BOARD
+);
+
+export const setCurrentBoardAction = createAction(
+  BoardActionTypes.SET_CURRENT_BOARD
+);
+export const successSetCurrentBoardAction = createAction(
+  BoardActionTypes.SUCCESS_SET_CURRENT_BOARD,
+  (payload: string) => payload
+);
+export const errorSetCurrentBoardAction = createAction(
+  BoardActionTypes.ERROR_SET_CURRENT_BOARD
 );

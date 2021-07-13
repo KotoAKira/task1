@@ -30,7 +30,7 @@ function AddBoardDialog({ open, handleClose, handleAdd }: SimpleDialogProps) {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add board</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Enter the name of the board and click on the Create button to create a

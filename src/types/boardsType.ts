@@ -6,8 +6,7 @@ export interface ColumnI {
 
 export interface ItemI {
   id: string;
-  title: string;
-  content: string;
+  text: string;
 }
 
 export interface BoardI {
@@ -21,4 +20,13 @@ export interface BoardI {
 export interface UserI {
   uid: string;
   name: string;
+}
+
+// eslint-disable-next-line no-shadow
+export enum BoardOperations {
+  EDIT_BOARD_NAME,
+  ADD_COLUMN,
+  EDIT_COLUMN_NAME,
+  ADD_ITEM,
+  EDIT_ITEM,
 }
