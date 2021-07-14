@@ -38,9 +38,9 @@ function AddBoardDialog({
       button = "Add";
       break;
     case BoardOperations.ADD_ITEM:
-      content = "Enter a name for the item and click the Add button";
+      content = "Enter a text for the item and click the Add button";
       title = "Add Item";
-      label = "Item name";
+      label = "Item text";
       button = "Add";
       break;
     case BoardOperations.EDIT_BOARD_NAME:
@@ -56,9 +56,9 @@ function AddBoardDialog({
       button = "Edit";
       break;
     case BoardOperations.EDIT_ITEM:
-      content = "Enter a name for the item and click the Edit button";
-      title = "Edit item name";
-      label = "Item name";
+      content = "Enter a text for the item and click the Edit button";
+      title = "Edit item text";
+      label = "Item text";
       button = "Edit";
       break;
   }

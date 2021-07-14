@@ -1,6 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  emptyBoardWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: theme.spacing(30),
+  },
   wrapper: {
     marginTop: "2rem",
     marginBottom: "2rem",

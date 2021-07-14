@@ -14,6 +14,7 @@ import {
   errorUpdateBoardAction,
 } from "../actions/boards";
 import * as BoardService from "../../services/boards";
+import { BoardI } from "../../types/boardsType";
 
 export const createBoard =
   (boardName: string, managerUid: string, managerName: string) =>
@@ -34,11 +35,11 @@ export const createBoard =
   };
 
 export const updateBoard =
-  (boardName: string, boardId: string) => (dispatch: Dispatch) => {
+  (board: BoardI, boardId: string) => (dispatch: Dispatch) => {
     dispatch(updateBoardAction());
-    BoardService.updateBoardName(boardId, boardName)
+    BoardService.updateBoard(boardId, board)
       .then(() => {
-        dispatch(successUpdateBoardAction({ boardName, id: boardId }));
+        dispatch(successUpdateBoardAction({ board, id: boardId }));
       })
       .catch(() => {
         dispatch(errorUpdateBoardAction());

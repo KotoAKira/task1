@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { BoardI } from "../types/boardsType";
 
 export const fetchUserName = () => {
   const userUid: string = firebase.auth().currentUser!.uid;
@@ -27,3 +28,6 @@ export const updateBoardName = (boardId: string, boardName: string) =>
     .child("boards")
     .child(boardId)
     .update({ boardName });
+
+export const updateBoard = (boardId: string, board: BoardI) =>
+  firebase.database().ref().child("boards").child(boardId).set(board);

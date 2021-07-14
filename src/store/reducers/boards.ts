@@ -38,28 +38,6 @@ export const reducer = handleActions<State>(
       ...state,
       isLoading: false,
     }),
-    [BoardActionTypes.UPDATE_BOARD]: (state: State) => ({
-      ...state,
-      isLoading: true,
-    }),
-    [BoardActionTypes.SUCCESS_UPDATE_BOARD]: (
-      state: State,
-      action: AnyAction
-    ) => ({
-      ...state,
-      isLoading: false,
-      boards: {
-        ...state.boards,
-        [action.payload.id]: {
-          ...state.boards[action.payload.id],
-          boardName: action.payload.boardName,
-        },
-      },
-    }),
-    [BoardActionTypes.ERROR_UPDATE_BOARD]: (state: State) => ({
-      ...state,
-      isLoading: false,
-    }),
     [BoardActionTypes.DELETE_BOARD]: (state: State) => ({
       ...state,
       isLoading: true,
@@ -108,6 +86,26 @@ export const reducer = handleActions<State>(
       isLoading: false,
     }),
     [BoardActionTypes.ERROR_SET_CURRENT_BOARD]: (state: State) => ({
+      ...state,
+      isLoading: false,
+    }),
+
+    [BoardActionTypes.UPDATE_BOARD]: (state: State) => ({
+      ...state,
+      isLoading: true,
+    }),
+    [BoardActionTypes.SUCCESS_UPDATE_BOARD]: (
+      state: State,
+      action: AnyAction
+    ) => ({
+      ...state,
+      isLoading: false,
+      boards: {
+        ...state.boards,
+        [action.payload.id]: action.payload.board,
+      },
+    }),
+    [BoardActionTypes.ERROR_UPDATE_BOARD]: (state: State) => ({
       ...state,
       isLoading: false,
     }),

@@ -7,10 +7,6 @@ export enum BoardActionTypes {
   SUCCESS_FETCH_BOARDS = "[Board] SUCCESS_FETCH_BOARDS",
   ERROR_FETCH_BOARDS = "[Board] ERROR_FETCH_BOARDS",
 
-  UPDATE_BOARD = "[Board] UPDATE_BOARD",
-  SUCCESS_UPDATE_BOARD = "[Board] SUCCESS_UPDATE_BOARD",
-  ERROR_UPDATE_BOARD = "[Board] ERROR_UPDATE_BOARD",
-
   CREATE_BOARD = "[Board] CREATE_BOARD",
   SUCCESS_CREATE_BOARD = "[Board] SUCCESS_CREATE_BOARD",
   ERROR_CREATE_BOARD = "[Board] ERROR_CREATE_BOARD",
@@ -22,6 +18,10 @@ export enum BoardActionTypes {
   SET_CURRENT_BOARD = "[Board] SET_CURRENT_BOARD",
   SUCCESS_SET_CURRENT_BOARD = "[Board] SUCCESS_SET_CURRENT_BOARD",
   ERROR_SET_CURRENT_BOARD = "[Board] ERROR_SET_CURRENT_BOARD",
+
+  UPDATE_BOARD = "[Board] UPDATE_BOARD",
+  SUCCESS_UPDATE_BOARD = "[Board] SUCCESS_UPDATE_BOARD",
+  ERROR_UPDATE_BOARD = "[Board] ERROR_UPDATE_BOARD",
 }
 
 export const fetchBoardsAction = createAction(BoardActionTypes.FETCH_BOARDS);
@@ -31,15 +31,6 @@ export const successFetchBoardsAction = createAction(
 );
 export const errorFetchBoardsAction = createAction(
   BoardActionTypes.ERROR_FETCH_BOARDS
-);
-
-export const updateBoardAction = createAction(BoardActionTypes.UPDATE_BOARD);
-export const successUpdateBoardAction = createAction(
-  BoardActionTypes.SUCCESS_UPDATE_BOARD,
-  (payload: { boardName: string; id: string }) => payload
-);
-export const errorUpdateBoardAction = createAction(
-  BoardActionTypes.ERROR_UPDATE_BOARD
 );
 
 export const createBoardAction = createAction(BoardActionTypes.CREATE_BOARD);
@@ -69,4 +60,13 @@ export const successSetCurrentBoardAction = createAction(
 );
 export const errorSetCurrentBoardAction = createAction(
   BoardActionTypes.ERROR_SET_CURRENT_BOARD
+);
+
+export const updateBoardAction = createAction(BoardActionTypes.UPDATE_BOARD);
+export const successUpdateBoardAction = createAction(
+  BoardActionTypes.SUCCESS_UPDATE_BOARD,
+  (payload: { id: string; board: BoardI }) => payload
+);
+export const errorUpdateBoardAction = createAction(
+  BoardActionTypes.ERROR_UPDATE_BOARD
 );

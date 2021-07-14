@@ -17,3 +17,8 @@ export const selectCurrentBoardId = createSelector(
   boardsState,
   (state) => state.currentBoardId
 );
+
+export const selectCurrentBoard = createSelector(
+  boardsState,
+  (state) => state.boards[state.currentBoardId!]
+);
