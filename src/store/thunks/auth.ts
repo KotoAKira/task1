@@ -26,7 +26,8 @@ export const register =
     AuthService.register(email, password, name, secondName)
       .then(() => {
         dispatch(successRegisterAction());
-        history.push("/login");
+        history.push("/confirm");
+        window.location.reload();
       })
       .catch((error) => {
         dispatch(errorRegisterAction(error.message));
@@ -43,6 +44,7 @@ export const signIn =
         if (user) {
           if (!user.emailVerified) {
             history.push("/confirm");
+            window.location.reload();
             user.sendEmailVerification();
           } else {
             history.push("/");

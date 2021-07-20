@@ -8,17 +8,22 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { privateRoutes, publicRoutes } from "../routes";
-import { RouteType } from "../types/routesType";
-import { MAIN_ROUTE } from "../utils/consts";
-import { ConfirmPage } from "../pages/Confirm/ConfirmPage";
-import Spinner from "./Spinner/Spinner";
-import { selectLoginIsLoading } from "../store/selectors/auth";
+import { MAIN_ROUTE } from "../../utils/consts";
+import { ConfirmPage } from "../../pages/Confirm/ConfirmPage";
+import Spinner from "../Spinner/Spinner";
+import { selectLoginIsLoading } from "../../store/selectors/auth";
 import {
   authenticatingAction,
   errorAuthenticatingAction,
   successAuthenticatingAction,
-} from "../store/actions/auth";
+} from "../../store/actions/auth";
+import Navbar from "../Navbar/Navbar";
+import { ProtectedRoute } from "./ProtectedRoute";
+import MainPage from "../../pages/Main/MainPage";
+import BoardsPage from "../../pages/Boards/BoardsPage";
+import LoginPage from "../../pages/Login/LoginPage";
+import RegistrationPage from "../../pages/Registration/RegistrationPage";
+import BoardPage from "../../pages/Board/BoardPage";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();
@@ -65,22 +70,41 @@ const AppRouter: React.FC = function () {
 
   return (
     <BrowserRouter>
+      {authentication.authenticated && !authentication.shouldConfirm && (
+        <Navbar />
+      )}
       <Switch>
-        {authentication.shouldConfirm && (
-          <Route exact path="/confirm" component={ConfirmPage} />
-        )}
-        {authentication.authenticated &&
-          privateRoutes.map((rt: RouteType) => (
-            <Route
-              key={rt.path}
-              path={rt.path}
-              component={rt.component}
-              exact
-            />
-          ))}
-        {publicRoutes.map((rt: RouteType) => (
-          <Route key={rt.path} path={rt.path} component={rt.component} exact />
-        ))}
+        <Route path="/" exact component={MainPage} />
+        <ProtectedRoute
+          authenticated={authentication.shouldConfirm}
+          exact
+          path="/confirm"
+          component={ConfirmPage}
+        />
+        <ProtectedRoute
+          authenticated={authentication.authenticated}
+          exact
+          path="/boards"
+          component={BoardsPage}
+        />
+        <ProtectedRoute
+          authenticated={authentication.authenticated}
+          exact
+          path="/board"
+          component={BoardPage}
+        />
+        <ProtectedRoute
+          authenticated={!authentication.authenticated}
+          exact
+          path="/login"
+          component={LoginPage}
+        />
+        <ProtectedRoute
+          authenticated={!authentication.authenticated}
+          exact
+          path="/registration"
+          component={RegistrationPage}
+        />
         <Redirect to={MAIN_ROUTE} />
       </Switch>
     </BrowserRouter>

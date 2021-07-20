@@ -21,12 +21,3 @@ export interface UserI {
   uid: string;
   name: string;
 }
-
-// eslint-disable-next-line no-shadow
-export enum BoardOperations {
-  EDIT_BOARD_NAME,
-  ADD_COLUMN,
-  EDIT_COLUMN_NAME,
-  ADD_ITEM,
-  EDIT_ITEM,
-}

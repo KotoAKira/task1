@@ -1,9 +1,7 @@
 import { Button } from "@material-ui/core";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import { signOut } from "../../store/thunks/auth";
 import useStyles from "./style";
 
 // eslint-disable-next-line import/prefer-default-export
