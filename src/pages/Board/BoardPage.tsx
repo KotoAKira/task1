@@ -75,8 +75,6 @@ const BoardPage: React.FC = function () {
       addItemHandler(board, setBoard, setOpen, column, columnId)
     );
     setOpen(true);
-    console.log(boardHandler);
-    console.log(column);
   };
 
   const editBoardNameClickHandler = () => {
@@ -218,7 +216,12 @@ const BoardPage: React.FC = function () {
   ) {
     e.preventDefault();
     e.stopPropagation();
-    if (currentDragColumnOfItem && currentDragItem && board.columns) {
+    if (
+      currentDragColumnOfItem &&
+      currentDragItem &&
+      board.columns &&
+      dragType === dragStartType.dragItem
+    ) {
       const currentItemIndex =
         currentDragColumnOfItem.items.indexOf(currentDragItem);
       currentDragColumnOfItem.items.splice(currentItemIndex, 1);
