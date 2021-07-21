@@ -27,7 +27,7 @@ export enum BoardActionTypes {
 export const fetchBoardsAction = createAction(BoardActionTypes.FETCH_BOARDS);
 export const successFetchBoardsAction = createAction(
   BoardActionTypes.SUCCESS_FETCH_BOARDS,
-  (payload: any) => payload
+  (payload: { [p: string]: BoardI }) => payload
 );
 export const errorFetchBoardsAction = createAction(
   BoardActionTypes.ERROR_FETCH_BOARDS

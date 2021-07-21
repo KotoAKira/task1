@@ -1,12 +1,12 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Redirect, Route } from "react-router-dom";
 
-// eslint-disable-next-line import/prefer-default-export
+// eslint-disable-next-line
 export const ProtectedRoute = ({
   component: Component,
   authenticated,
   ...rest
-}: any) => (
+}: any): ReactElement => (
   <Route
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...rest}

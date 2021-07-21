@@ -1,6 +1,6 @@
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import React from "react";
+import React, { ReactElement } from "react";
 import useStyles from "./Styles";
 import { BoardI, ColumnI, ItemI } from "../../types/boardsType";
 
@@ -11,18 +11,18 @@ interface ItemProps {
     event: React.DragEvent<HTMLDivElement>,
     column: ColumnI,
     item: ItemI
-  ) => any;
+  ) => void;
   dropItemHandler: (
     event: React.DragEvent<HTMLDivElement>,
     column: ColumnI,
     item: ItemI
-  ) => any;
+  ) => void;
   editItemClickHandler: (
     columnIndex: number,
     column: ColumnI,
     itemIndex: number,
     item: ItemI
-  ) => any;
+  ) => () => void;
   columnIndex: number;
   itemIndex: number;
   deleteItemHandler: (
@@ -31,7 +31,7 @@ interface ItemProps {
     item: ItemI,
     setBoard: React.Dispatch<BoardI>,
     board: BoardI
-  ) => any;
+  ) => () => void;
   setBoard: React.Dispatch<BoardI>;
   board: BoardI;
 }
@@ -47,7 +47,7 @@ const Item: ({
   deleteItemHandler,
   setBoard,
   board,
-}: ItemProps) => any = ({
+}: ItemProps) => ReactElement = ({
   column,
   item,
   dragItemStartHandler,

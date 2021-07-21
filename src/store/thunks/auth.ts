@@ -1,5 +1,4 @@
 import { Dispatch } from "redux";
-
 import * as AuthService from "../../services/auth";
 import {
   errorRegisterAction,
@@ -21,7 +20,7 @@ export const register =
     secondName: string,
     history: any
   ) =>
-  (dispatch: Dispatch) => {
+  (dispatch: Dispatch): void => {
     dispatch(registerAction());
     AuthService.register(email, password, name, secondName)
       .then(() => {

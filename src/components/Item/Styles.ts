@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   item: {
     boxSizing: "border-box",
     position: "relative",

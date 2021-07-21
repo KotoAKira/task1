@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import Filled from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,7 @@ import {
 } from "../../store/thunks/boards";
 import { successSetCurrentBoardAction } from "../../store/actions/boards";
 
-const Table = function () {
+const Table = function (): ReactElement {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();

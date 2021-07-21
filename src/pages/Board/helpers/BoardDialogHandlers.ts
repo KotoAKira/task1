@@ -5,7 +5,7 @@ import { BoardI, ColumnI, ItemI } from "../../../types/boardsType";
 
 export const setAddColumnContent = (
   setMainContent: React.Dispatch<MainContentI>
-) => {
+): void => {
   setMainContent({
     content: "Enter a name for the column and click the Add button",
     title: "Add column",
@@ -16,7 +16,7 @@ export const setAddColumnContent = (
 
 export const setAddItemContent = (
   setMainContent: React.Dispatch<MainContentI>
-) => {
+): void => {
   setMainContent({
     content: "Enter a text for the item and click the Add button",
     title: "Add Item",
@@ -27,7 +27,7 @@ export const setAddItemContent = (
 
 export const setEditBoardNameContent = (
   setMainContent: React.Dispatch<MainContentI>
-) => {
+): void => {
   setMainContent({
     content: "Enter a name for the board and click the Edit button",
     title: "Edit board name",
@@ -38,7 +38,7 @@ export const setEditBoardNameContent = (
 
 export const setEditColumnNameContent = (
   setMainContent: React.Dispatch<MainContentI>
-) => {
+): void => {
   setMainContent({
     content: "Enter a name for the column and click the Edit button",
     title: "Edit column name",
@@ -49,7 +49,7 @@ export const setEditColumnNameContent = (
 
 export const setEditItemContent = (
   setMainContent: React.Dispatch<MainContentI>
-) => {
+): void => {
   setMainContent({
     content: "Enter a text for the item and click the Edit button",
     title: "Edit item text",
@@ -64,7 +64,7 @@ export const addColumnHandler =
     setBoard: React.Dispatch<BoardI>,
     setOpen: React.Dispatch<boolean>
   ) =>
-  (columnTitle: string) => {
+  (columnTitle: string): void => {
     if (board.columns) {
       setBoard({
         ...board,
@@ -87,7 +87,7 @@ export const addItemHandler =
     handlerColumn: ColumnI,
     handlerColumnId: number
   ) =>
-  (text: string) => {
+  (text: string): void => {
     if (
       board.columns &&
       handlerColumn &&
@@ -135,7 +135,7 @@ export const editBoardNameHandler =
     setBoard: React.Dispatch<BoardI>,
     setOpen: React.Dispatch<boolean>
   ) =>
-  (boardName: string) => {
+  (boardName: string): void => {
     setBoard({
       ...board,
       boardName,
@@ -151,7 +151,7 @@ export const editColumnNameHandler =
     handlerColumn: ColumnI,
     handlerColumnId: number
   ) =>
-  (columnTitle: string) => {
+  (columnTitle: string): void => {
     if (board.columns && handlerColumnId !== null && handlerColumn) {
       const editColumn = { ...handlerColumn, columnTitle };
       setBoard({
@@ -178,7 +178,7 @@ export const editItemHandler =
     handlerItem: ItemI,
     handlerItemId: number
   ) =>
-  (itemText: string) => {
+  (itemText: string): void => {
     if (
       board.columns &&
       handlerColumnId !== null &&

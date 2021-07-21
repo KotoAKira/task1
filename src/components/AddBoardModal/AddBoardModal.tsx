@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -10,10 +10,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export interface SimpleDialogProps {
   open: boolean;
   handleClose: () => void;
-  handleAdd: (boardName: string) => any;
+  handleAdd: (boardName: string) => () => void;
 }
 
-function AddBoardDialog({ open, handleClose, handleAdd }: SimpleDialogProps) {
+function AddBoardDialog({
+  open,
+  handleClose,
+  handleAdd,
+}: SimpleDialogProps): ReactElement {
   const [boardName, setBoardName] = useState("");
   const [disabled, setDisabled] = useState(true);
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -26,7 +26,7 @@ function AddBoardDialog({
   handleClose,
   mainContent,
   handler,
-}: SimpleDialogProps) {
+}: SimpleDialogProps): ReactElement {
   const [text, setText] = useState("");
   const [disabled, setDisabled] = useState(true);
 

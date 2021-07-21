@@ -6,7 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useStyles from "./Styles";
-import { ColumnI, ItemI } from "../../types/boardsType";
+import { ColumnI, dragStartType, ItemI } from "../../types/boardsType";
 import BoardDialog, {
   MainContentI,
 } from "../../components/BoardDialog/BoardDialog";
@@ -32,6 +32,13 @@ import {
   setEditColumnNameContent,
   setEditItemContent,
 } from "./helpers/BoardDialogHandlers";
+import {
+  dragColumnOverHandler,
+  dragColumnStartHandler,
+  dragItemStartHandler,
+  dropColumnHandler,
+  dropItemHandler,
+} from "./helpers/DragHandlers";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
@@ -61,7 +68,15 @@ const BoardPage: React.FC = function () {
     setOpen(false);
   };
 
-  // click handlers
+  const [currentDragColumn, setCurrentDragColumn] = useState<ColumnI | null>(
+    null
+  );
+  const [dragType, setDragType] = useState<dragStartType>(
+    dragStartType.dragItem
+  );
+  const [currentDragColumnOfItem, setCurrentDragColumnOfItem] =
+    useState<ColumnI | null>(null);
+  const [currentDragItem, setCurrentDragItem] = useState<ItemI | null>(null);
 
   const addColumnClickHandler = () => {
     setAddColumnContent(setMainContent);
@@ -110,135 +125,6 @@ const BoardPage: React.FC = function () {
       setOpen(true);
     };
 
-  // drag column handlers
-  const [currentDragColumn, setCurrentDragColumn] = useState<ColumnI | null>(
-    null
-  );
-
-  // eslint-disable-next-line no-shadow
-  enum dragStartType {
-    dragItem,
-    dragColumn,
-  }
-
-  const [dragType, setDragType] = useState<dragStartType>(
-    dragStartType.dragItem
-  );
-
-  function dragColumnOverHandler(e: React.DragEvent<HTMLElement>) {
-    e.preventDefault();
-  }
-
-  function dragColumnStartHandler(
-    e: React.DragEvent<HTMLElement>,
-    column: ColumnI
-  ) {
-    setCurrentDragColumn(column);
-    setDragType(dragStartType.dragColumn);
-  }
-
-  function dropColumnHandler(e: React.DragEvent<HTMLElement>, column: ColumnI) {
-    e.preventDefault();
-    if (
-      currentDragColumn &&
-      board.columns &&
-      dragType === dragStartType.dragColumn
-    ) {
-      const currentColumnIndex = board.columns?.indexOf(currentDragColumn);
-      const currentDropColumnIndex = board.columns?.indexOf(column);
-      const editColumns = [...board.columns];
-      editColumns.splice(currentColumnIndex, 1, column);
-      editColumns.splice(currentDropColumnIndex, 1, currentDragColumn);
-      setBoard({ ...board, columns: editColumns });
-    } else if (
-      currentDragItem &&
-      currentDragColumnOfItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem &&
-      column.items
-    ) {
-      column.items.push(currentDragItem);
-      const currentItemIndex =
-        currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
-      setBoard({
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
-          if (col.id === column.id) return column;
-          return col;
-        }),
-      });
-    } else if (
-      currentDragItem &&
-      currentDragColumnOfItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem
-    ) {
-      const newColumn = { ...column, items: [currentDragItem] };
-      const currentItemIndex =
-        currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
-      setBoard({
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
-          if (col.id === newColumn.id) return newColumn;
-          return col;
-        }),
-      });
-    }
-  }
-
-  // drag item handlers
-
-  const [currentDragColumnOfItem, setCurrentDragColumnOfItem] =
-    useState<ColumnI | null>(null);
-  const [currentDragItem, setCurrentDragItem] = useState<ItemI | null>(null);
-
-  function dragItemStartHandler(
-    e: React.DragEvent<HTMLElement>,
-    column: ColumnI,
-    item: ItemI
-  ) {
-    e.stopPropagation();
-    setCurrentDragColumnOfItem(column);
-    setCurrentDragItem(item);
-    setDragType(dragStartType.dragItem);
-  }
-
-  function dropItemHandler(
-    e: React.DragEvent<HTMLElement>,
-    column: ColumnI,
-    item: ItemI
-  ) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (
-      currentDragColumnOfItem &&
-      currentDragItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem
-    ) {
-      const currentItemIndex =
-        currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
-      const dropItemIndex = column.items.indexOf(item);
-      column.items.splice(dropItemIndex + 1, 0, currentDragItem);
-      setBoard({
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
-          if (col.id === column.id) return column;
-          return col;
-        }),
-      });
-    }
-  }
-
   if (!boardId) {
     return (
       <div className={classes.emptyBoardWrapper}>
@@ -282,8 +168,26 @@ const BoardPage: React.FC = function () {
               board.columns.map((column, columnIndex) => (
                 <div
                   draggable
-                  onDragStart={(event) => dragColumnStartHandler(event, column)}
-                  onDrop={(event) => dropColumnHandler(event, column)}
+                  onDragStart={(event) =>
+                    dragColumnStartHandler(
+                      event,
+                      column,
+                      setCurrentDragColumn,
+                      setDragType
+                    )
+                  }
+                  onDrop={(event) =>
+                    dropColumnHandler(
+                      event,
+                      column,
+                      currentDragColumn,
+                      board,
+                      setBoard,
+                      dragType,
+                      currentDragItem,
+                      currentDragColumnOfItem
+                    )
+                  }
                   onDragOver={(event) => dragColumnOverHandler(event)}
                   className={classes.column}
                   key={column.id}
@@ -316,8 +220,28 @@ const BoardPage: React.FC = function () {
                           setBoard={setBoard}
                           editItemClickHandler={editItemClickHandler}
                           deleteItemHandler={deleteItemHandler}
-                          dragItemStartHandler={dragItemStartHandler}
-                          dropItemHandler={dropItemHandler}
+                          dragItemStartHandler={(event) =>
+                            dragItemStartHandler(
+                              event,
+                              column,
+                              item,
+                              setCurrentDragColumnOfItem,
+                              setCurrentDragItem,
+                              setDragType
+                            )
+                          }
+                          dropItemHandler={(event) =>
+                            dropItemHandler(
+                              event,
+                              column,
+                              item,
+                              currentDragColumnOfItem,
+                              currentDragItem,
+                              board,
+                              setBoard,
+                              dragType
+                            )
+                          }
                         />
                       ))}
                   </div>

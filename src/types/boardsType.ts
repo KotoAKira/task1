@@ -21,3 +21,9 @@ export interface UserI {
   uid: string;
   name: string;
 }
+
+// eslint-disable-next-line no-shadow
+export enum dragStartType {
+  dragItem,
+  dragColumn,
+}

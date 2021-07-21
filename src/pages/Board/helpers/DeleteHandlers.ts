@@ -1,7 +1,8 @@
 import { BoardI, ColumnI, ItemI } from "../../../types/boardsType";
 
 export const deleteColumnHandler =
-  (column: ColumnI, setBoard: React.Dispatch<BoardI>, board: BoardI) => () => {
+  (column: ColumnI, setBoard: React.Dispatch<BoardI>, board: BoardI) =>
+  (): void => {
     setBoard({
       ...board,
       columns: board.columns?.filter((col) => {
@@ -21,7 +22,7 @@ export const deleteItemHandler =
     setBoard: React.Dispatch<BoardI>,
     board: BoardI
   ) =>
-  () => {
+  (): void => {
     setBoard({
       ...board,
       columns: board.columns?.map((col) => {

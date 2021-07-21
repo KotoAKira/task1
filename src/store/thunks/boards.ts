@@ -18,7 +18,7 @@ import { BoardI } from "../../types/boardsType";
 
 export const createBoard =
   (boardName: string, managerUid: string, managerName: string) =>
-  (dispatch: Dispatch) => {
+  (dispatch: Dispatch): void => {
     dispatch(createBoardAction());
     BoardService.createBoard(boardName, managerUid, managerName)
       .then((response) => {
@@ -35,7 +35,8 @@ export const createBoard =
   };
 
 export const updateBoard =
-  (board: BoardI, boardId: string) => (dispatch: Dispatch) => {
+  (board: BoardI, boardId: string) =>
+  (dispatch: Dispatch): void => {
     dispatch(updateBoardAction());
     BoardService.updateBoard(boardId, board)
       .then(() => {
@@ -46,24 +47,28 @@ export const updateBoard =
       });
   };
 
-export const deleteBoard = (boardId: string) => (dispatch: Dispatch) => {
-  dispatch(deleteBoardAction());
-  BoardService.deleteBoard(boardId)
-    .then(() => {
-      dispatch(successDeleteBoardAction(boardId));
-    })
-    .catch(() => {
-      dispatch(errorDeleteBoardAction());
-    });
-};
+export const deleteBoard =
+  (boardId: string) =>
+  (dispatch: Dispatch): void => {
+    dispatch(deleteBoardAction());
+    BoardService.deleteBoard(boardId)
+      .then(() => {
+        dispatch(successDeleteBoardAction(boardId));
+      })
+      .catch(() => {
+        dispatch(errorDeleteBoardAction());
+      });
+  };
 
-export const fetchBoards = () => (dispatch: Dispatch) => {
-  dispatch(fetchBoardsAction());
-  BoardService.fetchBoards()
-    .then((e) => {
-      dispatch(successFetchBoardsAction({ ...e.val() }));
-    })
-    .catch(() => {
-      dispatch(errorFetchBoardsAction());
-    });
-};
+export const fetchBoards =
+  () =>
+  (dispatch: Dispatch): void => {
+    dispatch(fetchBoardsAction());
+    BoardService.fetchBoards()
+      .then((e) => {
+        dispatch(successFetchBoardsAction({ ...e.val() }));
+      })
+      .catch(() => {
+        dispatch(errorFetchBoardsAction());
+      });
+  };
