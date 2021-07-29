@@ -3,23 +3,23 @@ import { BoardI } from "../types/boardsType";
 
 export const fetchUserName = () => {
   const userUid: string = firebase.auth().currentUser!.uid;
-  return firebase.database().ref().child("users").child(userUid).once("value");
+  return firebase.firestore().collection("users").doc(userUid).get();
 };
 
 export const createBoard = (
   boardName: string,
   managerUid: string,
   managerName: string
-): firebase.database.ThenableReference => {
-  const database = firebase.database().ref().child("boards");
-  return database.push({ boardName, managerUid, managerName });
+): Promise<firebase.firestore.DocumentReference> => {
+  const database = firebase.firestore().collection("boards");
+  return database.add({ boardName, managerUid, managerName });
 };
 
 export const fetchBoards = () =>
-  firebase.database().ref().child("boards").once("value");
+  firebase.firestore().collection("boards").get();
 
 export const deleteBoard = (boardId: string): Promise<any> =>
-  firebase.database().ref().child("boards").child(boardId).remove();
+  firebase.firestore().collection("boards").doc(boardId).delete();
 
 export const updateBoard = (boardId: string, board: BoardI): Promise<any> =>
-  firebase.database().ref().child("boards").child(boardId).set(board);
+  firebase.firestore().collection("boards").doc(boardId).set(board);

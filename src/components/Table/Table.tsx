@@ -56,7 +56,7 @@ const Table = function (): ReactElement {
       if (user) {
         setUserUid(user.uid);
         fetchUserName().then((e) => {
-          setUserName(e.val().name.concat(" ", e.val().secondName));
+          setUserName(e.data()?.name.concat(" ", e.data()?.secondName));
         });
       }
     });
@@ -89,7 +89,7 @@ const Table = function (): ReactElement {
               </tr>
             );
           }
-          return <div />;
+          return <div key={key} />;
         })}
       </table>
       <AddBoardDialog

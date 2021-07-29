@@ -25,7 +25,7 @@ export const createBoard =
         dispatch(
           successCreateBoardAction({
             board: { boardName, columns: [], managerName, managerUid },
-            id: response.key,
+            id: response.id,
           })
         );
       })
@@ -65,8 +65,19 @@ export const fetchBoards =
   (dispatch: Dispatch): void => {
     dispatch(fetchBoardsAction());
     BoardService.fetchBoards()
-      .then((e) => {
-        dispatch(successFetchBoardsAction({ ...e.val() }));
+      .then((res) => {
+        // eslint-disable-next-line array-callback-return
+        const obj: { [p: string]: BoardI } = Object.fromEntries(
+          res.docs.map((doc) => [
+            doc.id,
+            <BoardI>{
+              boardName: doc.data().boardName,
+              managerName: doc.data().managerName,
+              managerUid: doc.data().managerUid,
+            },
+          ])
+        );
+        dispatch(successFetchBoardsAction(obj));
       })
       .catch(() => {
         dispatch(errorFetchBoardsAction());

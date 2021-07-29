@@ -19,10 +19,9 @@ export const register = (
     .createUserWithEmailAndPassword(email, password)
     .then((res: any) => {
       firebase
-        .database()
-        .ref()
-        .child("users")
-        .child(res.user.uid)
+        .firestore()
+        .collection("users")
+        .doc(res.user?.uid)
         .set({ email, name, secondName });
       res.user.sendEmailVerification();
     });
