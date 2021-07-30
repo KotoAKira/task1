@@ -8,13 +8,13 @@ import useStyles from "./Styles";
 import AddBoardDialog from "../AddBoardModal/AddBoardModal";
 import { loadingProcess, selectBoards } from "../../store/selectors/boards";
 import { fetchUserName } from "../../services/boards";
-import Spinner from "../Spinner/Spinner";
 import {
-  createBoard,
-  deleteBoard,
-  fetchBoards,
-} from "../../store/thunks/boards";
-import { successSetCurrentBoardAction } from "../../store/actions/boards";
+  asyncCreateBoardAction,
+  asyncDeleteBoardAction,
+  asyncFetchBoardsAction,
+  successSetCurrentBoardAction,
+} from "../../store/actions/boards";
+import Spinner from "../Spinner/Spinner";
 
 const Table = function (): ReactElement {
   const classes = useStyles();
@@ -41,14 +41,20 @@ const Table = function (): ReactElement {
   };
 
   const handleAdd = (boardName: string) => () => {
-    dispatch(createBoard(boardName, userUid, userName));
+    dispatch(
+      asyncCreateBoardAction({
+        boardName,
+        managerUid: userUid,
+        managerName: userName,
+      })
+    );
     setOpen(false);
   };
 
   const deleteBoardHandler =
     (boardId: string) => (event: React.MouseEvent<React.ReactNode>) => {
       event.stopPropagation();
-      dispatch(deleteBoard(boardId));
+      dispatch(asyncDeleteBoardAction(boardId));
     };
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const Table = function (): ReactElement {
         });
       }
     });
-    dispatch(fetchBoards());
+    dispatch(asyncFetchBoardsAction());
   }, []);
 
   if (load) {

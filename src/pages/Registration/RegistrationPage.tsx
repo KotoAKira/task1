@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "@material-ui/lab";
 import useStyles from "./styles";
 import { selectRegisterError } from "../../store/selectors/auth";
-import { register } from "../../store/thunks/auth";
+import { asyncRegisterAction } from "../../store/actions/auth";
 
 const RegistrationPage: React.FC = function () {
   const classes = useStyles();
@@ -27,13 +27,13 @@ const RegistrationPage: React.FC = function () {
     const { firstName, lastName, password, email } = event.target;
     event.preventDefault();
     dispatch(
-      register(
-        email.value,
-        password.value,
-        firstName.value,
-        lastName.value,
-        history
-      )
+      asyncRegisterAction({
+        email: email.value,
+        password: password.value,
+        name: firstName.value,
+        secondName: lastName.value,
+        history,
+      })
     );
   };
 

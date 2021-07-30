@@ -1,7 +1,11 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Dispatch } from "redux";
 import { MainContentI } from "../../../components/BoardDialog/BoardDialog";
-import { BoardI, ColumnI, ItemI } from "../../../types/boardsType";
+import { asyncUpdateBoardAction } from "../../../store/actions/boards";
+import BoardI from "../../../interfaces/Board";
+import ColumnI from "../../../interfaces/Column";
+import ItemI from "../../../interfaces/Item";
 
 export const setAddColumnContent = (
   setMainContent: React.Dispatch<MainContentI>
@@ -61,20 +65,25 @@ export const setEditItemContent = (
 export const addColumnHandler =
   (
     board: BoardI,
-    setBoard: React.Dispatch<BoardI>,
-    setOpen: React.Dispatch<boolean>
+    setOpen: React.Dispatch<boolean>,
+    boardId: string | null,
+    dispatch: Dispatch<any>
   ) =>
   (columnTitle: string): void => {
-    if (board.columns) {
-      setBoard({
+    if (board.columns && boardId) {
+      const newBoard = {
         ...board,
         columns: [...board.columns, { id: uuidv4(), columnTitle, items: [] }],
-      });
-    } else {
-      setBoard({
+      };
+
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+    } else if (boardId) {
+      const newBoard = {
         ...board,
         columns: [{ id: uuidv4(), columnTitle, items: [] }],
-      });
+      };
+
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     }
     setOpen(false);
   };
@@ -82,17 +91,19 @@ export const addColumnHandler =
 export const addItemHandler =
   (
     board: BoardI,
-    setBoard: React.Dispatch<BoardI>,
     setOpen: React.Dispatch<boolean>,
     handlerColumn: ColumnI,
-    handlerColumnId: number
+    handlerColumnId: number,
+    boardId: string | null,
+    dispatch: Dispatch<any>
   ) =>
   (text: string): void => {
     if (
       board.columns &&
       handlerColumn &&
       handlerColumnId !== null &&
-      board.columns[handlerColumnId].items?.length
+      board.columns[handlerColumnId].items?.length &&
+      boardId
     ) {
       const editColumn = {
         ...handlerColumn,
@@ -101,7 +112,7 @@ export const addItemHandler =
           { id: uuidv4(), text },
         ],
       };
-      setBoard({
+      const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
           if (col.id === editColumn.id) {
@@ -109,13 +120,20 @@ export const addItemHandler =
           }
           return col;
         }),
-      });
-    } else if (board.columns && handlerColumnId !== null && handlerColumn) {
+      };
+
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+    } else if (
+      board.columns &&
+      handlerColumnId !== null &&
+      handlerColumn &&
+      boardId
+    ) {
       const editColumn = {
         ...handlerColumn,
         items: [{ id: uuidv4(), text }],
       };
-      setBoard({
+      const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
           if (col.id === editColumn.id) {
@@ -123,7 +141,9 @@ export const addItemHandler =
           }
           return col;
         }),
-      });
+      };
+
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     }
 
     setOpen(false);
@@ -132,29 +152,35 @@ export const addItemHandler =
 export const editBoardNameHandler =
   (
     board: BoardI,
-    setBoard: React.Dispatch<BoardI>,
-    setOpen: React.Dispatch<boolean>
+    setOpen: React.Dispatch<boolean>,
+    boardId: string | null,
+    dispatch: Dispatch<any>
   ) =>
   (boardName: string): void => {
-    setBoard({
-      ...board,
-      boardName,
-    });
+    if (boardId) {
+      const newBoard = {
+        ...board,
+        boardName,
+      };
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+    }
+
     setOpen(false);
   };
 
 export const editColumnNameHandler =
   (
     board: BoardI,
-    setBoard: React.Dispatch<BoardI>,
     setOpen: React.Dispatch<boolean>,
     handlerColumn: ColumnI,
-    handlerColumnId: number
+    handlerColumnId: number,
+    boardId: string | null,
+    dispatch: Dispatch<any>
   ) =>
   (columnTitle: string): void => {
-    if (board.columns && handlerColumnId !== null && handlerColumn) {
+    if (board.columns && handlerColumnId !== null && handlerColumn && boardId) {
       const editColumn = { ...handlerColumn, columnTitle };
-      setBoard({
+      const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
           if (col.id === editColumn.id) {
@@ -162,21 +188,22 @@ export const editColumnNameHandler =
           }
           return col;
         }),
-      });
+      };
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     }
-
     setOpen(false);
   };
 
 export const editItemHandler =
   (
     board: BoardI,
-    setBoard: React.Dispatch<BoardI>,
     setOpen: React.Dispatch<boolean>,
     handlerColumn: ColumnI,
     handlerColumnId: number,
     handlerItem: ItemI,
-    handlerItemId: number
+    handlerItemId: number,
+    boardId: string | null,
+    dispatch: Dispatch<any>
   ) =>
   (itemText: string): void => {
     if (
@@ -184,7 +211,8 @@ export const editItemHandler =
       handlerColumnId !== null &&
       handlerColumn &&
       handlerItem &&
-      handlerItemId !== null
+      handlerItemId !== null &&
+      boardId
     ) {
       const editItem = { ...handlerItem, text: itemText };
       const editColumn = {
@@ -197,7 +225,7 @@ export const editItemHandler =
         }),
       };
 
-      setBoard({
+      const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
           if (col.id === editColumn.id) {
@@ -205,7 +233,9 @@ export const editItemHandler =
           }
           return col;
         }),
-      });
+      };
+
+      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     }
 
     setOpen(false);

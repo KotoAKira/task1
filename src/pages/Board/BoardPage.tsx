@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Container, Typography } from "@material-ui/core";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -6,7 +6,6 @@ import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useStyles from "./Styles";
-import { ColumnI, dragStartType, ItemI } from "../../types/boardsType";
 import BoardDialog, {
   MainContentI,
 } from "../../components/BoardDialog/BoardDialog";
@@ -14,7 +13,6 @@ import {
   selectCurrentBoard,
   selectCurrentBoardId,
 } from "../../store/selectors/boards";
-import { updateBoard } from "../../store/thunks/boards";
 import {
   deleteColumnHandler,
   deleteItemHandler,
@@ -39,19 +37,16 @@ import {
   dropColumnHandler,
   dropItemHandler,
 } from "./helpers/DragHandlers";
+import ColumnI from "../../interfaces/Column";
+import dragStartType from "../../types/DragStartType";
+import ItemI from "../../interfaces/Item";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
   const dispatch = useDispatch();
   // Board logic
   const boardId = useSelector(selectCurrentBoardId);
-  const [board, setBoard] = useState(useSelector(selectCurrentBoard));
-
-  useEffect(() => {
-    if (boardId != null) {
-      dispatch(updateBoard(board, boardId));
-    }
-  }, [board]);
+  const board = useSelector(selectCurrentBoard);
 
   const [open, setOpen] = useState(false);
   const [mainContent, setMainContent] = useState<MainContentI>({
@@ -61,7 +56,7 @@ const BoardPage: React.FC = function () {
     label: "",
   });
   const [boardHandler, setBoardHandler] = useState<(text: string) => void>(() =>
-    addColumnHandler(board, setBoard, setOpen)
+    addColumnHandler(board, setOpen, boardId, dispatch)
   );
 
   const handleClose = () => {
@@ -80,21 +75,23 @@ const BoardPage: React.FC = function () {
 
   const addColumnClickHandler = () => {
     setAddColumnContent(setMainContent);
-    setBoardHandler(() => addColumnHandler(board, setBoard, setOpen));
+    setBoardHandler(() => addColumnHandler(board, setOpen, boardId, dispatch));
     setOpen(true);
   };
 
   const addItemClickHandler = (columnId: number, column: ColumnI) => () => {
     setAddItemContent(setMainContent);
     setBoardHandler(() =>
-      addItemHandler(board, setBoard, setOpen, column, columnId)
+      addItemHandler(board, setOpen, column, columnId, boardId, dispatch)
     );
     setOpen(true);
   };
 
   const editBoardNameClickHandler = () => {
     setEditBoardNameContent(setMainContent);
-    setBoardHandler(() => editBoardNameHandler(board, setBoard, setOpen));
+    setBoardHandler(() =>
+      editBoardNameHandler(board, setOpen, boardId, dispatch)
+    );
     setOpen(true);
   };
 
@@ -102,7 +99,14 @@ const BoardPage: React.FC = function () {
     (columnId: number, column: ColumnI) => () => {
       setEditColumnNameContent(setMainContent);
       setBoardHandler(() =>
-        editColumnNameHandler(board, setBoard, setOpen, column, columnId)
+        editColumnNameHandler(
+          board,
+          setOpen,
+          column,
+          columnId,
+          boardId,
+          dispatch
+        )
       );
       setOpen(true);
     };
@@ -114,12 +118,13 @@ const BoardPage: React.FC = function () {
       setBoardHandler(() =>
         editItemHandler(
           board,
-          setBoard,
           setOpen,
           column,
           columnIndex,
           item,
-          itemIndex
+          itemIndex,
+          boardId,
+          dispatch
         )
       );
       setOpen(true);
@@ -182,10 +187,11 @@ const BoardPage: React.FC = function () {
                       column,
                       currentDragColumn,
                       board,
-                      setBoard,
                       dragType,
                       currentDragItem,
-                      currentDragColumnOfItem
+                      currentDragColumnOfItem,
+                      boardId,
+                      dispatch
                     )
                   }
                   onDragOver={(event) => dragColumnOverHandler(event)}
@@ -201,7 +207,12 @@ const BoardPage: React.FC = function () {
                   />
                   <DeleteOutlineIcon
                     className={classes.deleteColumnIcon}
-                    onClick={deleteColumnHandler(column, setBoard, board)}
+                    onClick={deleteColumnHandler(
+                      column,
+                      board,
+                      boardId,
+                      dispatch
+                    )}
                   />
                   <AddIcon
                     className={classes.addIcon}
@@ -217,7 +228,8 @@ const BoardPage: React.FC = function () {
                           item={item}
                           itemIndex={itemIndex}
                           board={board}
-                          setBoard={setBoard}
+                          dispatch={dispatch}
+                          boardId={boardId}
                           editItemClickHandler={editItemClickHandler}
                           deleteItemHandler={deleteItemHandler}
                           dragItemStartHandler={(event) =>
@@ -238,8 +250,9 @@ const BoardPage: React.FC = function () {
                               currentDragColumnOfItem,
                               currentDragItem,
                               board,
-                              setBoard,
-                              dragType
+                              dragType,
+                              boardId,
+                              dispatch
                             )
                           }
                         />

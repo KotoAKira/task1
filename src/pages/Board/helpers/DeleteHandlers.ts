@@ -1,9 +1,13 @@
-import { BoardI, ColumnI, ItemI } from "../../../types/boardsType";
+import { Dispatch } from "redux";
+import ColumnI from "../../../interfaces/Column";
+import { asyncUpdateBoardAction } from "../../../store/actions/boards";
+import BoardI from "../../../interfaces/Board";
+import ItemI from "../../../interfaces/Item";
 
 export const deleteColumnHandler =
-  (column: ColumnI, setBoard: React.Dispatch<BoardI>, board: BoardI) =>
+  (column: ColumnI, board: BoardI, boardId: string, dispatch: Dispatch<any>) =>
   (): void => {
-    setBoard({
+    const newBoard = {
       ...board,
       columns: board.columns?.filter((col) => {
         if (col.id === column.id) {
@@ -11,7 +15,9 @@ export const deleteColumnHandler =
         }
         return true;
       }),
-    });
+    };
+
+    dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
   };
 
 export const deleteItemHandler =
@@ -19,11 +25,12 @@ export const deleteItemHandler =
     column: ColumnI,
     columnIndex: number,
     item: ItemI,
-    setBoard: React.Dispatch<BoardI>,
-    board: BoardI
+    board: BoardI,
+    boardId: string,
+    dispatch: Dispatch<any>
   ) =>
   (): void => {
-    setBoard({
+    const newBoard = {
       ...board,
       columns: board.columns?.map((col) => {
         if (col.id === column.id && board.columns) {
@@ -40,5 +47,7 @@ export const deleteItemHandler =
         }
         return col;
       }),
-    });
+    };
+
+    dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
   };

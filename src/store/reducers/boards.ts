@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { handleActions } from "redux-actions";
 import { BoardActionTypes } from "../actions/boards";
-import { BoardI } from "../../types/boardsType";
+import BoardI from "../../interfaces/Board";
 
 export interface State {
   boards: {

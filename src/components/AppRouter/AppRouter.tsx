@@ -8,7 +8,6 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { MAIN_ROUTE } from "../../utils/consts";
 import { ConfirmPage } from "../../pages/Confirm/ConfirmPage";
 import Spinner from "../Spinner/Spinner";
 import { selectLoginIsLoading } from "../../store/selectors/auth";
@@ -105,7 +104,7 @@ const AppRouter: React.FC = function () {
           path="/registration"
           component={RegistrationPage}
         />
-        <Redirect to={MAIN_ROUTE} />
+        <Redirect to="/" />
       </Switch>
     </BrowserRouter>
   );

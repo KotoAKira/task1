@@ -13,7 +13,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import useStyles from "./styles";
 import { selectLoginError } from "../../store/selectors/auth";
-import { signIn } from "../../store/thunks/auth";
+import { asyncSigningInAction } from "../../store/actions/auth";
 
 const LoginPage: React.FC = function () {
   const classes = useStyles();
@@ -36,7 +36,7 @@ const LoginPage: React.FC = function () {
   // обработчик кнопки
   const buttonHandler = (event: React.FormEvent): void => {
     event.preventDefault();
-    dispatch(signIn(email, pass, history));
+    dispatch(asyncSigningInAction({ email, password: pass, history }));
   };
   return (
     <Container component="main" maxWidth="xs">

@@ -1,10 +1,11 @@
 import firebase from "firebase";
-import { BoardI } from "../types/boardsType";
+import BoardI from "../interfaces/Board";
 
-export const fetchUserName = () => {
-  const userUid: string = firebase.auth().currentUser!.uid;
-  return firebase.firestore().collection("users").doc(userUid).get();
-};
+export const fetchUserName =
+  (): Promise<firebase.firestore.DocumentSnapshot> => {
+    const userUid: string = firebase.auth().currentUser!.uid;
+    return firebase.firestore().collection("users").doc(userUid).get();
+  };
 
 export const createBoard = (
   boardName: string,
@@ -15,11 +16,13 @@ export const createBoard = (
   return database.add({ boardName, managerUid, managerName });
 };
 
-export const fetchBoards = () =>
-  firebase.firestore().collection("boards").get();
+export const fetchBoards = (): Promise<firebase.firestore.QuerySnapshot> =>
+  firebase.firestore().collection("boards").get({
+    source: "server",
+  });
 
-export const deleteBoard = (boardId: string): Promise<any> =>
+export const deleteBoard = (boardId: string): Promise<void> =>
   firebase.firestore().collection("boards").doc(boardId).delete();
 
-export const updateBoard = (boardId: string, board: BoardI): Promise<any> =>
+export const updateBoard = (boardId: string, board: BoardI): Promise<void> =>
   firebase.firestore().collection("boards").doc(boardId).set(board);

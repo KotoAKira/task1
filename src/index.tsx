@@ -1,7 +1,7 @@
-import firebase from "firebase";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import firebase from "firebase";
 import App from "./App";
 import store from "./store";
 

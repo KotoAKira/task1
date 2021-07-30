@@ -1,8 +1,11 @@
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import React, { ReactElement } from "react";
+import { Dispatch } from "redux";
 import useStyles from "./Styles";
-import { BoardI, ColumnI, ItemI } from "../../types/boardsType";
+import ColumnI from "../../interfaces/Column";
+import ItemI from "../../interfaces/Item";
+import BoardI from "../../interfaces/Board";
 
 interface ItemProps {
   column: ColumnI;
@@ -29,11 +32,13 @@ interface ItemProps {
     column: ColumnI,
     columnIndex: number,
     item: ItemI,
-    setBoard: React.Dispatch<BoardI>,
-    board: BoardI
+    board: BoardI,
+    boardId: string,
+    dispatch: Dispatch<any>
   ) => () => void;
-  setBoard: React.Dispatch<BoardI>;
   board: BoardI;
+  boardId: string;
+  dispatch: Dispatch<any>;
 }
 
 const Item: ({
@@ -45,8 +50,9 @@ const Item: ({
   columnIndex,
   itemIndex,
   deleteItemHandler,
-  setBoard,
   board,
+  boardId,
+  dispatch,
 }: ItemProps) => ReactElement = ({
   column,
   item,
@@ -56,8 +62,9 @@ const Item: ({
   columnIndex,
   itemIndex,
   deleteItemHandler,
-  setBoard,
   board,
+  boardId,
+  dispatch,
 }: ItemProps) => {
   const classes = useStyles();
   return (
@@ -75,7 +82,14 @@ const Item: ({
       />
       <DeleteOutlineIcon
         className={classes.deleteItemIcon}
-        onClick={deleteItemHandler(column, columnIndex, item, setBoard, board)}
+        onClick={deleteItemHandler(
+          column,
+          columnIndex,
+          item,
+          board,
+          boardId,
+          dispatch
+        )}
       />
     </div>
   );
