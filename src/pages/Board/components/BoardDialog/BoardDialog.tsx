@@ -6,48 +6,58 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { useDispatch, useSelector } from "react-redux";
+import selectModal from "../../../../store/selectors/modal";
+import { hideModal } from "../../../../store/actions/modal";
 
-export interface SimpleDialogProps {
-  open: boolean;
-  handleClose: () => void;
-  handleAdd: (boardName: string) => () => void;
-}
+function AddBoardDialog(): ReactElement {
+  const modal = useSelector(selectModal);
 
-function AddBoardDialog({
-  open,
-  handleClose,
-  handleAdd,
-}: SimpleDialogProps): ReactElement {
-  const [boardName, setBoardName] = useState("");
+  const dispatch = useDispatch();
+
+  const [text, setText] = useState("");
   const [disabled, setDisabled] = useState(true);
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBoardName(e.currentTarget.value);
+    setText(e.currentTarget.value);
     if (e.currentTarget.value) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
   };
+
+  const handleClose = () => {
+    dispatch(hideModal());
+  };
+
+  const buttonHandler = () => {
+    if (modal) {
+      modal.handler(text);
+      dispatch(hideModal());
+      setText("");
+    }
+  };
+
   return (
     <Dialog
-      open={open}
+      open={!!modal}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Add board</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        {modal?.mainContent.title}
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Enter the name of the board and click on the Create button to create a
-          new board
-        </DialogContentText>
+        <DialogContentText>{modal?.mainContent.content}</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Board Name"
+          label={modal?.mainContent.label}
           type="text"
           fullWidth
-          value={boardName}
+          value={text}
           onChange={changeHandler}
         />
       </DialogContent>
@@ -55,12 +65,8 @@ function AddBoardDialog({
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button
-          onClick={handleAdd(boardName)}
-          color="primary"
-          disabled={disabled}
-        >
-          Create
+        <Button onClick={buttonHandler} color="primary" disabled={disabled}>
+          {modal?.mainContent.button}
         </Button>
       </DialogActions>
     </Dialog>

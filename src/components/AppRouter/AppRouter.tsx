@@ -16,13 +16,13 @@ import {
   errorAuthenticatingAction,
   successAuthenticatingAction,
 } from "../../store/actions/auth";
-import Navbar from "../Navbar/Navbar";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../../pages/Main/MainPage";
 import BoardsPage from "../../pages/Boards/BoardsPage";
 import LoginPage from "../../pages/Login/LoginPage";
 import RegistrationPage from "../../pages/Registration/RegistrationPage";
 import BoardPage from "../../pages/Board/BoardPage";
+import Navbar from "../Navbar/Navbar";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();

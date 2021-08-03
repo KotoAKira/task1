@@ -1,5 +1,6 @@
-import { put, call, takeEvery } from "redux-saga/effects";
+import { put, call, takeEvery, ForkEffect } from "redux-saga/effects";
 import firebase from "firebase";
+import { AnyAction } from "redux";
 import {
   BoardActionTypes,
   createBoardAction,
@@ -23,7 +24,7 @@ import {
 } from "../../services/boards";
 import BoardI from "../../interfaces/Board";
 
-function* createBoardWorker(action: any) {
+function* createBoardWorker(action: AnyAction) {
   try {
     const { payload } = action;
     const { boardName, managerUid, managerName } = payload;
@@ -61,7 +62,7 @@ function* fetchBoardsWorker() {
   }
 }
 
-function* deleteBoardWorker(action: any) {
+function* deleteBoardWorker(action: AnyAction) {
   try {
     const { payload } = action;
     yield put(deleteBoardAction());
@@ -72,7 +73,7 @@ function* deleteBoardWorker(action: any) {
   }
 }
 
-function* updateBoardWorker(action: any) {
+function* updateBoardWorker(action: AnyAction) {
   try {
     const { payload } = action;
     const { board, boardId } = payload;
@@ -84,7 +85,7 @@ function* updateBoardWorker(action: any) {
   }
 }
 
-export default function* boardWatcher() {
+export default function* boardWatcher(): Generator<ForkEffect<never>> {
   yield takeEvery(BoardActionTypes.ASYNC_CREATE_BOARD, createBoardWorker);
   yield takeEvery(BoardActionTypes.ASYNC_FETCH_BOARDS, fetchBoardsWorker);
   yield takeEvery(BoardActionTypes.ASYNC_DELETE_BOARD, deleteBoardWorker);

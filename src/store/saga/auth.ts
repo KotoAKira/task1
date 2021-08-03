@@ -1,4 +1,5 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, ForkEffect, put, takeEvery } from "redux-saga/effects";
+import { AnyAction } from "redux";
 import {
   AuthActionTypes,
   errorRegisterAction,
@@ -12,7 +13,7 @@ import {
 } from "../actions/auth";
 import { register, signIn, signOut } from "../../services/auth";
 
-function* signInWorker(action: any) {
+function* signInWorker(action: AnyAction) {
   try {
     const { payload } = action;
     const { email, password, history } = payload;
@@ -43,7 +44,7 @@ function* signOutWorker() {
   }
 }
 
-function* registerWorker(action: any) {
+function* registerWorker(action: AnyAction) {
   try {
     const { payload } = action;
     const { email, password, name, secondName, history } = payload;
@@ -57,7 +58,7 @@ function* registerWorker(action: any) {
   }
 }
 
-export default function* authWatcher() {
+export default function* authWatcher(): Generator<ForkEffect<never>> {
   yield takeEvery(AuthActionTypes.ASYNC_SIGNING_IN, signInWorker);
   yield takeEvery(AuthActionTypes.ASYNC_SIGNING_OUT, signOutWorker);
   yield takeEvery(AuthActionTypes.ASYNC_REGISTER, registerWorker);

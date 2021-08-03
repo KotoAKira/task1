@@ -6,15 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
 import useStyles from "./Styles";
 import AddBoardDialog from "../AddBoardModal/AddBoardModal";
-import { loadingProcess, selectBoards } from "../../store/selectors/boards";
-import { fetchUserName } from "../../services/boards";
+import {
+  loadingProcess,
+  selectBoards,
+} from "../../../../store/selectors/boards";
+import { fetchUserName } from "../../../../services/boards";
 import {
   asyncCreateBoardAction,
   asyncDeleteBoardAction,
   asyncFetchBoardsAction,
   successSetCurrentBoardAction,
-} from "../../store/actions/boards";
-import Spinner from "../Spinner/Spinner";
+} from "../../../../store/actions/boards";
+import Spinner from "../../../../components/Spinner/Spinner";
 
 const Table = function (): ReactElement {
   const classes = useStyles();

@@ -6,9 +6,6 @@ import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useStyles from "./Styles";
-import BoardDialog, {
-  MainContentI,
-} from "../../components/BoardDialog/BoardDialog";
 import {
   selectCurrentBoard,
   selectCurrentBoardId,
@@ -17,18 +14,18 @@ import {
   deleteColumnHandler,
   deleteItemHandler,
 } from "./helpers/DeleteHandlers";
-import Item from "../../components/Item/Item";
+import Item from "./components/Item/Item";
 import {
   addColumnHandler,
   addItemHandler,
   editBoardNameHandler,
   editColumnNameHandler,
   editItemHandler,
-  setAddColumnContent,
-  setAddItemContent,
-  setEditBoardNameContent,
-  setEditColumnNameContent,
-  setEditItemContent,
+  addColumnContent,
+  addItemContent,
+  editBoardNameContent,
+  editColumnNameContent,
+  editItemContent,
 } from "./helpers/BoardDialogHandlers";
 import {
   dragColumnOverHandler,
@@ -40,6 +37,8 @@ import {
 import ColumnI from "../../interfaces/Column";
 import dragStartType from "../../types/DragStartType";
 import ItemI from "../../interfaces/Item";
+import BoardDialog from "./components/BoardDialog/BoardDialog";
+import { showModal } from "../../store/actions/modal";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
@@ -47,21 +46,6 @@ const BoardPage: React.FC = function () {
   // Board logic
   const boardId = useSelector(selectCurrentBoardId);
   const board = useSelector(selectCurrentBoard);
-
-  const [open, setOpen] = useState(false);
-  const [mainContent, setMainContent] = useState<MainContentI>({
-    title: "",
-    button: "",
-    content: "",
-    label: "",
-  });
-  const [boardHandler, setBoardHandler] = useState<(text: string) => void>(() =>
-    addColumnHandler(board, setOpen, boardId, dispatch)
-  );
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const [currentDragColumn, setCurrentDragColumn] = useState<ColumnI | null>(
     null
@@ -74,60 +58,65 @@ const BoardPage: React.FC = function () {
   const [currentDragItem, setCurrentDragItem] = useState<ItemI | null>(null);
 
   const addColumnClickHandler = () => {
-    setAddColumnContent(setMainContent);
-    setBoardHandler(() => addColumnHandler(board, setOpen, boardId, dispatch));
-    setOpen(true);
+    dispatch(
+      showModal({
+        mainContent: addColumnContent,
+        handler: addColumnHandler(board, boardId, dispatch),
+      })
+    );
   };
 
   const addItemClickHandler = (columnId: number, column: ColumnI) => () => {
-    setAddItemContent(setMainContent);
-    setBoardHandler(() =>
-      addItemHandler(board, setOpen, column, columnId, boardId, dispatch)
+    dispatch(
+      showModal({
+        mainContent: addItemContent,
+        handler: addItemHandler(board, column, columnId, boardId, dispatch),
+      })
     );
-    setOpen(true);
   };
 
   const editBoardNameClickHandler = () => {
-    setEditBoardNameContent(setMainContent);
-    setBoardHandler(() =>
-      editBoardNameHandler(board, setOpen, boardId, dispatch)
+    dispatch(
+      showModal({
+        mainContent: editBoardNameContent,
+        handler: editBoardNameHandler(board, boardId, dispatch),
+      })
     );
-    setOpen(true);
   };
 
   const editColumnNameClickHandler =
     (columnId: number, column: ColumnI) => () => {
-      setEditColumnNameContent(setMainContent);
-      setBoardHandler(() =>
-        editColumnNameHandler(
-          board,
-          setOpen,
-          column,
-          columnId,
-          boardId,
-          dispatch
-        )
+      dispatch(
+        showModal({
+          mainContent: editColumnNameContent,
+          handler: editColumnNameHandler(
+            board,
+            column,
+            columnId,
+            boardId,
+            dispatch
+          ),
+        })
       );
-      setOpen(true);
     };
 
   const editItemClickHandler =
     (columnIndex: number, column: ColumnI, itemIndex: number, item: ItemI) =>
     () => {
-      setEditItemContent(setMainContent);
-      setBoardHandler(() =>
-        editItemHandler(
-          board,
-          setOpen,
-          column,
-          columnIndex,
-          item,
-          itemIndex,
-          boardId,
-          dispatch
-        )
+      dispatch(
+        showModal({
+          mainContent: editItemContent,
+          handler: editItemHandler(
+            board,
+            column,
+            columnIndex,
+            item,
+            itemIndex,
+            boardId,
+            dispatch
+          ),
+        })
       );
-      setOpen(true);
     };
 
   if (!boardId) {
@@ -173,28 +162,22 @@ const BoardPage: React.FC = function () {
               board.columns.map((column, columnIndex) => (
                 <div
                   draggable
-                  onDragStart={(event) =>
-                    dragColumnStartHandler(
-                      event,
-                      column,
-                      setCurrentDragColumn,
-                      setDragType
-                    )
-                  }
-                  onDrop={(event) =>
-                    dropColumnHandler(
-                      event,
-                      column,
-                      currentDragColumn,
-                      board,
-                      dragType,
-                      currentDragItem,
-                      currentDragColumnOfItem,
-                      boardId,
-                      dispatch
-                    )
-                  }
-                  onDragOver={(event) => dragColumnOverHandler(event)}
+                  onDragStart={dragColumnStartHandler(
+                    column,
+                    setCurrentDragColumn,
+                    setDragType
+                  )}
+                  onDrop={dropColumnHandler(
+                    column,
+                    currentDragColumn,
+                    board,
+                    dragType,
+                    currentDragItem,
+                    currentDragColumnOfItem,
+                    boardId,
+                    dispatch
+                  )}
+                  onDragOver={dragColumnOverHandler()}
                   className={classes.column}
                   key={column.id}
                 >
@@ -232,29 +215,23 @@ const BoardPage: React.FC = function () {
                           boardId={boardId}
                           editItemClickHandler={editItemClickHandler}
                           deleteItemHandler={deleteItemHandler}
-                          dragItemStartHandler={(event) =>
-                            dragItemStartHandler(
-                              event,
-                              column,
-                              item,
-                              setCurrentDragColumnOfItem,
-                              setCurrentDragItem,
-                              setDragType
-                            )
-                          }
-                          dropItemHandler={(event) =>
-                            dropItemHandler(
-                              event,
-                              column,
-                              item,
-                              currentDragColumnOfItem,
-                              currentDragItem,
-                              board,
-                              dragType,
-                              boardId,
-                              dispatch
-                            )
-                          }
+                          dragItemStartHandler={dragItemStartHandler(
+                            column,
+                            item,
+                            setCurrentDragColumnOfItem,
+                            setCurrentDragItem,
+                            setDragType
+                          )}
+                          dropItemHandler={dropItemHandler(
+                            column,
+                            item,
+                            currentDragColumnOfItem,
+                            currentDragItem,
+                            board,
+                            dragType,
+                            boardId,
+                            dispatch
+                          )}
                         />
                       ))}
                   </div>
@@ -263,12 +240,7 @@ const BoardPage: React.FC = function () {
           </div>
         </div>
       </Container>
-      <BoardDialog
-        open={open}
-        handleClose={handleClose}
-        mainContent={mainContent}
-        handler={boardHandler}
-      />
+      <BoardDialog />
     </>
   );
 };
