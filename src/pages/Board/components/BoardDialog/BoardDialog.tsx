@@ -19,8 +19,9 @@ function AddBoardDialog(): ReactElement {
   const [disabled, setDisabled] = useState(true);
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.currentTarget.value);
-    if (e.currentTarget.value) {
+    const { value } = e.currentTarget;
+    setText(value);
+    if (value) {
       setDisabled(false);
     } else {
       setDisabled(true);

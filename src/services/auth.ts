@@ -12,7 +12,8 @@ export const register = (
   email: string,
   password: string,
   name: string,
-  secondName: string
+  secondName: string,
+  history: any
 ): Promise<void> =>
   firebase
     .auth()
@@ -24,4 +25,5 @@ export const register = (
         .doc(res.user?.uid)
         .set({ email, name, secondName });
       res.user.sendEmailVerification();
-    });
+    })
+    .then(() => history.push("/confirm"));

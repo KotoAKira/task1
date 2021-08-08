@@ -10,6 +10,10 @@ const useStyles = makeStyles(() => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  body: {
+    height: "400px",
+    width: "100%",
+  },
 }));
 
 export default useStyles;

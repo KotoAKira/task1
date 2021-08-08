@@ -15,7 +15,7 @@ const BoardsPage: React.FC = function () {
           </Typography>
         </div>
         <div>
-          <div style={{ height: 400, width: "100%" }}>
+          <div className={classes.body}>
             <Table />
           </div>
         </div>

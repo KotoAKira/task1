@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
   const authenticated = useSelector(selectAuthenticated);
 
   const signOutHandler = (): void => {
-    dispatch(asyncSigningOutAction());
+    dispatch(asyncSigningOutAction(history));
   };
 
   const redirect =

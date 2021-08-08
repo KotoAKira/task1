@@ -10,6 +10,7 @@ import {
   signingOutAction,
   successRegisterAction,
   successSignInAction,
+  successSignOutAction,
 } from "../actions/auth";
 import { register, signIn, signOut } from "../../services/auth";
 
@@ -23,11 +24,9 @@ function* signInWorker(action: AnyAction) {
     if (user) {
       if (!user.emailVerified) {
         history.push("/confirm");
-        window.location.reload();
         user.sendEmailVerification();
       } else {
         history.push("/");
-        window.location.reload();
       }
     }
   } catch (e) {
@@ -35,10 +34,12 @@ function* signInWorker(action: AnyAction) {
   }
 }
 
-function* signOutWorker() {
+function* signOutWorker(action: AnyAction) {
   try {
     yield put(signingOutAction());
     yield call(signOut);
+    yield put(successSignOutAction());
+    action.payload.push("/login");
   } catch (e) {
     yield put(errorSignOutAction(e.message));
   }
@@ -49,10 +50,8 @@ function* registerWorker(action: AnyAction) {
     const { payload } = action;
     const { email, password, name, secondName, history } = payload;
     yield put(registerAction());
-    yield call(register, email, password, name, secondName);
+    yield call(register, email, password, name, secondName, history);
     yield put(successRegisterAction());
-    history.push("/confirm");
-    window.location.reload();
   } catch (e) {
     yield put(errorRegisterAction(e.message));
   }

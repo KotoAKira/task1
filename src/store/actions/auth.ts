@@ -63,7 +63,8 @@ export const errorSignOutAction = createAction(
   (payload: { error: string }) => payload
 );
 export const asyncSigningOutAction = createAction(
-  AuthActionTypes.ASYNC_SIGNING_OUT
+  AuthActionTypes.ASYNC_SIGNING_OUT,
+  (payload: any) => payload
 );
 
 export const authenticatingAction = createAction(

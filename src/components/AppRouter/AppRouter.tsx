@@ -23,6 +23,7 @@ import LoginPage from "../../pages/Login/LoginPage";
 import RegistrationPage from "../../pages/Registration/RegistrationPage";
 import BoardPage from "../../pages/Board/BoardPage";
 import Navbar from "../Navbar/Navbar";
+import AppLoading from "../AppLoading/AppLoading";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();
@@ -73,7 +74,13 @@ const AppRouter: React.FC = function () {
         <Navbar />
       )}
       <Switch>
-        <Route path="/" exact component={MainPage} />
+        <Route path="/" exact component={AppLoading} />
+        <ProtectedRoute
+          authenticated={authentication.authenticated}
+          exact
+          path="/home"
+          component={MainPage}
+        />
         <ProtectedRoute
           authenticated={authentication.shouldConfirm}
           exact

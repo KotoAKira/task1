@@ -2,14 +2,17 @@ import { Button } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import { useDispatch } from "react-redux";
 import useStyles from "./style";
+import { asyncSigningOutAction } from "../../store/actions/auth";
 
 // eslint-disable-next-line import/prefer-default-export
 export const ConfirmPage = (): JSX.Element => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const handleSignIn = () => {
-    history.push("/login");
+    dispatch(asyncSigningOutAction(history));
   };
   return (
     <div className={classes.container}>
