@@ -104,8 +104,8 @@ export function dragItemStartHandler(
   setCurrentDragColumnOfItem: React.Dispatch<ColumnI>,
   setCurrentDragItem: React.Dispatch<ItemI>,
   setDragType: React.Dispatch<dragStartType>
-): (e: React.DragEvent<HTMLElement>) => void {
-  return (e: React.DragEvent<HTMLElement>) => {
+): () => (e: React.DragEvent<HTMLElement>) => void {
+  return () => (e: React.DragEvent<HTMLElement>) => {
     e.stopPropagation();
     setCurrentDragColumnOfItem(column);
     setCurrentDragItem(item);
@@ -122,8 +122,8 @@ export function dropItemHandler(
   dragType: dragStartType,
   boardId: string | null,
   dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
-): (e: React.DragEvent<HTMLElement>) => void {
-  return (e: React.DragEvent<HTMLElement>) => {
+): () => (e: React.DragEvent<HTMLElement>) => void {
+  return () => (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (

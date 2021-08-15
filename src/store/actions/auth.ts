@@ -1,6 +1,5 @@
 import { createAction } from "redux-actions";
 
-// eslint-disable-next-line no-shadow
 export enum AuthActionTypes {
   SIGNING_IN = "[Auth] SIGNING_IN",
   SUCCESS_SIGN_IN = "[Auth] SUCCESS_SIGN_IN",

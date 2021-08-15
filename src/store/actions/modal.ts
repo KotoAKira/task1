@@ -1,7 +1,6 @@
 import { createAction } from "redux-actions";
 import { ModalProperties } from "../../interfaces/ModalProperties";
 
-// eslint-disable-next-line no-shadow
 export enum ModalActionTypes {
   SHOW_MODAL = "[Modal] SHOW_MODAL",
   HIDE_MODAL = "[Modal] HIDE_MODAL",

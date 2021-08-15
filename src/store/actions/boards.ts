@@ -1,7 +1,6 @@
 import { createAction } from "redux-actions";
 import BoardI from "../../interfaces/Board";
 
-// eslint-disable-next-line no-shadow
 export enum BoardActionTypes {
   FETCH_BOARDS = "[Board] FETCH_BOARDS",
   SUCCESS_FETCH_BOARDS = "[Board] SUCCESS_FETCH_BOARDS",

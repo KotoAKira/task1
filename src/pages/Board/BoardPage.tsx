@@ -21,11 +21,6 @@ import {
   editBoardNameHandler,
   editColumnNameHandler,
   editItemHandler,
-  addColumnContent,
-  addItemContent,
-  editBoardNameContent,
-  editColumnNameContent,
-  editItemContent,
 } from "./helpers/BoardDialogHandlers";
 import {
   dragColumnOverHandler,
@@ -39,6 +34,13 @@ import dragStartType from "../../types/DragStartType";
 import ItemI from "../../interfaces/Item";
 import BoardDialog from "./components/BoardDialog/BoardDialog";
 import { showModal } from "../../store/actions/modal";
+import {
+  addColumnContent,
+  addItemContent,
+  editBoardNameContent,
+  editColumnNameContent,
+  editItemContent,
+} from "./consts/consts";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
