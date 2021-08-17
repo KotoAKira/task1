@@ -37,12 +37,7 @@ export function dropColumnHandler(
 ): (e: React.DragEvent<HTMLElement>) => void {
   return (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
-    if (
-      currentDragColumn &&
-      board.columns &&
-      dragType === dragStartType.dragColumn &&
-      boardId
-    ) {
+    if (dragType === dragStartType.dragColumn) {
       const currentColumnIndex = board.columns?.indexOf(currentDragColumn);
       const currentDropColumnIndex = board.columns?.indexOf(column);
       const editColumns = [...board.columns];
@@ -51,35 +46,25 @@ export function dropColumnHandler(
       const newBoard = { ...board, columns: editColumns };
 
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    } else if (
-      currentDragItem &&
-      currentDragColumnOfItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem &&
-      column.items &&
-      boardId
-    ) {
-      column.items.push(currentDragItem);
+    } else if (dragType === dragStartType.dragItem && column.items) {
+      const workColumn = column;
+      const workCurrentDragColumnOfItem = currentDragColumnOfItem;
+
+      workColumn.items.push(currentDragItem);
       const currentItemIndex =
         currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
+      workCurrentDragColumnOfItem.items.splice(currentItemIndex, 1);
       const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
           if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
-          if (col.id === column.id) return column;
+            return workCurrentDragColumnOfItem;
+          if (col.id === column.id) return workColumn;
           return col;
         }),
       };
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    } else if (
-      currentDragItem &&
-      currentDragColumnOfItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem &&
-      boardId
-    ) {
+    } else if (dragType === dragStartType.dragItem) {
       const newColumn = { ...column, items: [currentDragItem] };
       const currentItemIndex =
         currentDragColumnOfItem.items.indexOf(currentDragItem);
@@ -126,24 +111,21 @@ export function dropItemHandler(
   return () => (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (
-      currentDragColumnOfItem &&
-      currentDragItem &&
-      board.columns &&
-      dragType === dragStartType.dragItem &&
-      boardId
-    ) {
+    if (dragType === dragStartType.dragItem) {
+      const workCurrentDragColumnOfItem = currentDragColumnOfItem;
+      const workColumn = column;
+
       const currentItemIndex =
-        currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
-      const dropItemIndex = column.items.indexOf(item);
-      column.items.splice(dropItemIndex + 1, 0, currentDragItem);
+        workCurrentDragColumnOfItem.items.indexOf(currentDragItem);
+      workCurrentDragColumnOfItem.items.splice(currentItemIndex, 1);
+      const dropItemIndex = workColumn.items.indexOf(item);
+      workColumn.items.splice(dropItemIndex + 1, 0, currentDragItem);
       const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
-          if (col.id === column.id) return column;
+          if (col.id === workCurrentDragColumnOfItem.id)
+            return workCurrentDragColumnOfItem;
+          if (col.id === workColumn.id) return workColumn;
           return col;
         }),
       };

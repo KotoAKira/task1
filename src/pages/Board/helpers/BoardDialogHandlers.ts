@@ -13,15 +13,15 @@ export const addColumnHandler =
     dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
   ) =>
   (columnTitle: string): void => {
-    if (board.columns && boardId) {
+    if (board.columns) {
       const newBoard = {
         ...board,
         columns: [...board.columns, { id: uuidv4(), columnTitle, items: [] }],
       };
 
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    } else if (boardId) {
-      const newBoard = {
+    } else {
+      const newBoard: BoardI = {
         ...board,
         columns: [{ id: uuidv4(), columnTitle, items: [] }],
       };
@@ -39,13 +39,7 @@ export const addItemHandler =
     dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
   ) =>
   (text: string): void => {
-    if (
-      board.columns &&
-      handlerColumn &&
-      handlerColumnId !== null &&
-      board.columns[handlerColumnId].items?.length &&
-      boardId
-    ) {
+    if (board.columns[handlerColumnId].items?.length) {
       const editColumn = {
         ...handlerColumn,
         items: [
@@ -64,12 +58,7 @@ export const addItemHandler =
       };
 
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    } else if (
-      board.columns &&
-      handlerColumnId !== null &&
-      handlerColumn &&
-      boardId
-    ) {
+    } else {
       const editColumn = {
         ...handlerColumn,
         items: [{ id: uuidv4(), text }],
@@ -95,13 +84,11 @@ export const editBoardNameHandler =
     dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
   ) =>
   (boardName: string): void => {
-    if (boardId) {
-      const newBoard = {
-        ...board,
-        boardName,
-      };
-      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    }
+    const newBoard = {
+      ...board,
+      boardName,
+    };
+    dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
   };
 
 export const editColumnNameHandler =
@@ -113,19 +100,17 @@ export const editColumnNameHandler =
     dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
   ) =>
   (columnTitle: string): void => {
-    if (board.columns && handlerColumnId !== null && handlerColumn && boardId) {
-      const editColumn = { ...handlerColumn, columnTitle };
-      const newBoard = {
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === editColumn.id) {
-            return editColumn;
-          }
-          return col;
-        }),
-      };
-      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    }
+    const editColumn = { ...handlerColumn, columnTitle };
+    const newBoard = {
+      ...board,
+      columns: board.columns.map((col) => {
+        if (col.id === editColumn.id) {
+          return editColumn;
+        }
+        return col;
+      }),
+    };
+    dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
   };
 
 export const editItemHandler =
@@ -139,35 +124,26 @@ export const editItemHandler =
     dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
   ) =>
   (itemText: string): void => {
-    if (
-      board.columns &&
-      handlerColumnId !== null &&
-      handlerColumn &&
-      handlerItem &&
-      handlerItemId !== null &&
-      boardId
-    ) {
-      const editItem = { ...handlerItem, text: itemText };
-      const editColumn = {
-        ...handlerColumn,
-        items: board.columns[handlerColumnId].items.map((item) => {
-          if (item.id === editItem.id) {
-            return editItem;
-          }
-          return item;
-        }),
-      };
+    const editItem = { ...handlerItem, text: itemText };
+    const editColumn = {
+      ...handlerColumn,
+      items: board.columns[handlerColumnId].items.map((item) => {
+        if (item.id === editItem.id) {
+          return editItem;
+        }
+        return item;
+      }),
+    };
 
-      const newBoard = {
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === editColumn.id) {
-            return editColumn;
-          }
-          return col;
-        }),
-      };
+    const newBoard = {
+      ...board,
+      columns: board.columns.map((col) => {
+        if (col.id === editColumn.id) {
+          return editColumn;
+        }
+        return col;
+      }),
+    };
 
-      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
-    }
+    dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
   };

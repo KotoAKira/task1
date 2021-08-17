@@ -7,7 +7,7 @@ export interface State {
   modal: ModalProperties | null;
 }
 
-const initialState = {
+const initialState: State = {
   modal: null,
 };
 
