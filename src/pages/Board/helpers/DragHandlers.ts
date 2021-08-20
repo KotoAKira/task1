@@ -47,37 +47,56 @@ export function dropColumnHandler(
 
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     } else if (dragType === dragStartType.dragItem && column.items) {
-      const workColumn = column;
-      const workCurrentDragColumnOfItem = currentDragColumnOfItem;
-
-      workColumn.items.push(currentDragItem);
       const currentItemIndex =
         currentDragColumnOfItem.items.indexOf(currentDragItem);
-      workCurrentDragColumnOfItem.items.splice(currentItemIndex, 1);
+      const currentItems = [
+        ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
+        ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
+      ];
+      const newCurrentColumn: ColumnI = {
+        ...currentDragColumnOfItem,
+        items: currentItems,
+      };
+
+      const items = [...column.items, currentDragItem];
+      const newColumn: ColumnI = {
+        ...column,
+        items,
+      };
+
       const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return workCurrentDragColumnOfItem;
-          if (col.id === column.id) return workColumn;
+          if (col.id === newCurrentColumn.id) return newCurrentColumn;
+          if (col.id === newColumn.id) return newColumn;
           return col;
         }),
       };
+
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     } else if (dragType === dragStartType.dragItem) {
       const newColumn = { ...column, items: [currentDragItem] };
       const currentItemIndex =
         currentDragColumnOfItem.items.indexOf(currentDragItem);
-      currentDragColumnOfItem.items.splice(currentItemIndex, 1);
+
+      const currentItems = [
+        ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
+        ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
+      ];
+      const newCurrentColumn: ColumnI = {
+        ...currentDragColumnOfItem,
+        items: currentItems,
+      };
+
       const newBoard = {
         ...board,
         columns: board.columns.map((col) => {
-          if (col.id === currentDragColumnOfItem.id)
-            return currentDragColumnOfItem;
+          if (col.id === newCurrentColumn.id) return newCurrentColumn;
           if (col.id === newColumn.id) return newColumn;
           return col;
         }),
       };
+
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     }
   };
@@ -112,24 +131,61 @@ export function dropItemHandler(
     e.preventDefault();
     e.stopPropagation();
     if (dragType === dragStartType.dragItem) {
-      const workCurrentDragColumnOfItem = currentDragColumnOfItem;
-      const workColumn = column;
+      if (currentDragColumnOfItem !== column) {
+        const currentItemIndex =
+          currentDragColumnOfItem.items.indexOf(currentDragItem);
+        const currentItems = [
+          ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
+          ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
+        ];
+        const newCurrentColumn: ColumnI = {
+          ...currentDragColumnOfItem,
+          items: currentItems,
+        };
 
-      const currentItemIndex =
-        workCurrentDragColumnOfItem.items.indexOf(currentDragItem);
-      workCurrentDragColumnOfItem.items.splice(currentItemIndex, 1);
-      const dropItemIndex = workColumn.items.indexOf(item);
-      workColumn.items.splice(dropItemIndex + 1, 0, currentDragItem);
-      const newBoard = {
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === workCurrentDragColumnOfItem.id)
-            return workCurrentDragColumnOfItem;
-          if (col.id === workColumn.id) return workColumn;
-          return col;
-        }),
-      };
-      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+        const dropItemIndex = column.items.indexOf(item);
+        column.items.splice(dropItemIndex + 1, 0, currentDragItem);
+        const items = [
+          ...column.items.slice(0, dropItemIndex + 1),
+          currentDragItem,
+          ...column.items.slice(dropItemIndex + 2),
+        ];
+        const newColumn: ColumnI = {
+          ...column,
+          items,
+        };
+
+        const newBoard = {
+          ...board,
+          columns: board.columns.map((col) => {
+            if (col.id === newCurrentColumn.id) return newCurrentColumn;
+            if (col.id === newColumn.id) return newColumn;
+            return col;
+          }),
+        };
+        dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+      } else {
+        const items = [...column.items];
+
+        const currentItemIndex = items.indexOf(currentDragItem);
+        items.splice(currentItemIndex, 1);
+        const dropItemIndex = items.indexOf(item);
+        items.splice(dropItemIndex + 1, 0, currentDragItem);
+
+        const newColumn: ColumnI = {
+          ...column,
+          items,
+        };
+
+        const newBoard = {
+          ...board,
+          columns: board.columns.map((col) => {
+            if (col.id === newColumn.id) return newColumn;
+            return col;
+          }),
+        };
+        dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+      }
     }
   };
 }
