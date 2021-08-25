@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import Filled from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router-dom";
@@ -6,16 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
 import useStyles from "./Styles";
 import AddBoardDialog from "../AddBoardModal/AddBoardModal";
-import { loadingProcess, selectBoards } from "../../store/selectors/boards";
-import { fetchUserName } from "../../services/boards";
-import Spinner from "../Spinner/Spinner";
 import {
-  createBoard,
-  deleteBoard,
-  fetchBoards,
-} from "../../store/thunks/boards";
+  loadingProcess,
+  selectBoards,
+} from "../../../../store/selectors/boards";
+import { fetchUserName } from "../../../../services/boards";
+import {
+  asyncCreateBoardAction,
+  asyncDeleteBoardAction,
+  asyncFetchBoardsAction,
+  successSetCurrentBoardAction,
+} from "../../../../store/actions/boards";
+import Spinner from "../../../../components/Spinner/Spinner";
 
-const Table = function () {
+const Table = function (): ReactElement {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -34,19 +38,26 @@ const Table = function () {
     setOpen(false);
   };
   // table
-  const clickHandler = () => {
-    alert("redirect");
+  const clickHandler = (boardId: string) => () => {
+    history.push("/board");
+    dispatch(successSetCurrentBoardAction(boardId));
   };
 
   const handleAdd = (boardName: string) => () => {
-    dispatch(createBoard(boardName, userUid, userName));
+    dispatch(
+      asyncCreateBoardAction({
+        boardName,
+        managerUid: userUid,
+        managerName: userName,
+      })
+    );
     setOpen(false);
   };
 
   const deleteBoardHandler =
     (boardId: string) => (event: React.MouseEvent<React.ReactNode>) => {
       event.stopPropagation();
-      dispatch(deleteBoard(boardId));
+      dispatch(asyncDeleteBoardAction(boardId));
     };
 
   useEffect(() => {
@@ -54,11 +65,11 @@ const Table = function () {
       if (user) {
         setUserUid(user.uid);
         fetchUserName().then((e) => {
-          setUserName(e.val().name.concat(" ", e.val().secondName));
+          setUserName(e.data()?.name.concat(" ", e.data()?.secondName));
         });
       }
     });
-    dispatch(fetchBoards());
+    dispatch(asyncFetchBoardsAction());
   }, []);
 
   if (load) {
@@ -78,7 +89,7 @@ const Table = function () {
         {Object.entries(boards).map(([key, value]) => {
           if (value.managerUid === userUid) {
             return (
-              <tr onClick={clickHandler} key={key}>
+              <tr onClick={clickHandler(key)} key={key}>
                 <td className={classes.td}>{value.boardName}</td>
                 <td className={classes.td}>{value.managerName}</td>
                 <td className={classes.td}>
@@ -87,7 +98,7 @@ const Table = function () {
               </tr>
             );
           }
-          return <div />;
+          return <div key={key} />;
         })}
       </table>
       <AddBoardDialog

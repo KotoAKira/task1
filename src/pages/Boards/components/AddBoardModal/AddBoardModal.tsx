@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -6,14 +6,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { SimpleDialogProps } from "./types";
 
-export interface SimpleDialogProps {
-  open: boolean;
-  handleClose: () => void;
-  handleAdd: (boardName: string) => any;
-}
-
-function AddBoardDialog({ open, handleClose, handleAdd }: SimpleDialogProps) {
+function AddBoardDialog({
+  open,
+  handleClose,
+  handleAdd,
+}: SimpleDialogProps): ReactElement {
   const [boardName, setBoardName] = useState("");
   const [disabled, setDisabled] = useState(true);
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +29,7 @@ function AddBoardDialog({ open, handleClose, handleAdd }: SimpleDialogProps) {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add board</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Enter the name of the board and click on the Create button to create a

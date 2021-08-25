@@ -1,11 +1,10 @@
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
-import firebase from "firebase";
-import { signOut } from "../../store/thunks/auth";
 import useStyles from "./Styles";
 import { selectAuthenticated } from "../../store/selectors/auth";
+import { asyncSigningOutAction } from "../../store/actions/auth";
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,7 @@ const Navbar: React.FC = () => {
   const authenticated = useSelector(selectAuthenticated);
 
   const signOutHandler = (): void => {
-    dispatch(signOut(history));
+    dispatch(asyncSigningOutAction(history));
   };
 
   const redirect =
