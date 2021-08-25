@@ -47,33 +47,57 @@ export function dropColumnHandler(
 
       dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
     } else if (dragType === dragStartType.dragItem && column.items) {
-      const currentItemIndex =
-        currentDragColumnOfItem.items.indexOf(currentDragItem);
-      const currentItems = [
-        ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
-        ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
-      ];
-      const newCurrentColumn: ColumnI = {
-        ...currentDragColumnOfItem,
-        items: currentItems,
-      };
+      if (currentDragColumnOfItem !== column) {
+        const currentItemIndex =
+          currentDragColumnOfItem.items.indexOf(currentDragItem);
+        const currentItems = [
+          ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
+          ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
+        ];
+        const newCurrentColumn: ColumnI = {
+          ...currentDragColumnOfItem,
+          items: currentItems,
+        };
 
-      const items = [...column.items, currentDragItem];
-      const newColumn: ColumnI = {
-        ...column,
-        items,
-      };
+        const items = [...column.items, currentDragItem];
+        const newColumn: ColumnI = {
+          ...column,
+          items,
+        };
 
-      const newBoard = {
-        ...board,
-        columns: board.columns.map((col) => {
-          if (col.id === newCurrentColumn.id) return newCurrentColumn;
-          if (col.id === newColumn.id) return newColumn;
-          return col;
-        }),
-      };
+        const newBoard = {
+          ...board,
+          columns: board.columns.map((col) => {
+            if (col.id === newCurrentColumn.id) return newCurrentColumn;
+            if (col.id === newColumn.id) return newColumn;
+            return col;
+          }),
+        };
 
-      dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+        dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+      } else {
+        const currentItemIndex =
+          currentDragColumnOfItem.items.indexOf(currentDragItem);
+        const currentItems = [
+          ...currentDragColumnOfItem.items.slice(0, currentItemIndex),
+          ...currentDragColumnOfItem.items.slice(currentItemIndex + 1),
+          currentDragItem,
+        ];
+        const newCurrentColumn: ColumnI = {
+          ...currentDragColumnOfItem,
+          items: currentItems,
+        };
+
+        const newBoard = {
+          ...board,
+          columns: board.columns.map((col) => {
+            if (col.id === newCurrentColumn.id) return newCurrentColumn;
+            return col;
+          }),
+        };
+
+        dispatch(asyncUpdateBoardAction({ board: newBoard, boardId }));
+      }
     } else if (dragType === dragStartType.dragItem) {
       const newColumn = { ...column, items: [currentDragItem] };
       const currentItemIndex =
