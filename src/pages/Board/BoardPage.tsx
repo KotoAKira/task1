@@ -27,7 +27,6 @@ import {
   dragColumnStartHandler,
   dragItemStartHandler,
   dropColumnHandler,
-  dropItemHandler,
 } from "./helpers/DragHandlers";
 import ColumnI from "../../interfaces/Column";
 import dragStartType from "../../types/DragStartType";
@@ -213,26 +212,17 @@ const BoardPage: React.FC = function () {
                           item={item}
                           itemIndex={itemIndex}
                           board={board}
-                          dispatch={dispatch}
                           boardId={boardId}
                           editItemClickHandler={editItemClickHandler}
                           deleteItemHandler={deleteItemHandler}
+                          currentDragColumnOfItem={currentDragColumnOfItem}
+                          currentDragItem={currentDragItem}
                           dragItemStartHandler={dragItemStartHandler(
                             column,
                             item,
                             setCurrentDragColumnOfItem,
                             setCurrentDragItem,
                             setDragType
-                          )}
-                          dropItemHandler={dropItemHandler(
-                            column,
-                            item,
-                            currentDragColumnOfItem,
-                            currentDragItem,
-                            board,
-                            dragType,
-                            boardId,
-                            dispatch
                           )}
                         />
                       ))}

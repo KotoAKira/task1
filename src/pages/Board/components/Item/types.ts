@@ -9,7 +9,7 @@ interface ItemProps {
   column: ColumnI;
   item: ItemI;
   dragItemStartHandler: () => (event: React.DragEvent<HTMLDivElement>) => void;
-  dropItemHandler: () => (event: React.DragEvent<HTMLDivElement>) => void;
+  // dropItemHandler: () => (event: React.DragEvent<HTMLDivElement>) => void;
   editItemClickHandler: (
     columnIndex: number,
     column: ColumnI,
@@ -28,7 +28,8 @@ interface ItemProps {
   ) => () => void;
   board: BoardI;
   boardId: string;
-  dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>;
+  currentDragItem: any;
+  currentDragColumnOfItem: any;
 }
 
 export default ItemProps;

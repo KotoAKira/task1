@@ -189,3 +189,30 @@ export function dropItemHandler(
     }
   };
 }
+
+export function dragRefactor(
+  itemFromColumnId: string,
+  targetColumnId: string,
+  currentItem: ItemI,
+  toItem: ItemI,
+  board: BoardI
+): BoardI {
+  const { columns } = board;
+  const columnsCopy = [...columns];
+  const newColumns = columnsCopy.map((column) => {
+    const { id, items } = column;
+    if (id === itemFromColumnId) {
+      return {
+        ...column,
+        items: items.filter((item) => item.id !== currentItem.id),
+      };
+    }
+    if (id === targetColumnId) {
+      const index = items.indexOf(toItem);
+      items.splice(index, 0, currentItem);
+      return { ...column, items };
+    }
+    return column;
+  });
+  return { ...board, columns: newColumns };
+}
