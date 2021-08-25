@@ -1,7 +1,7 @@
-import ItemI from "./Item";
+import Item from "./Item";
 
-export default interface ColumnI {
+export default interface Column {
   id: string;
   columnTitle: string;
-  items: Array<ItemI>;
+  items: Array<Item>;
 }

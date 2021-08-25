@@ -1,7 +1,6 @@
-// eslint-disable-next-line no-shadow
-enum dragStartType {
+enum DragStartType {
   dragItem,
   dragColumn,
 }
 
-export default dragStartType;
+export default DragStartType;

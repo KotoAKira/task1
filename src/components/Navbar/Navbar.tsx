@@ -2,7 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import Button from "@material-ui/core/Button";
-import useStyles from "./Styles";
+import useStyles from "./styles";
 import { selectAuthenticated } from "../../store/selectors/auth";
 import { asyncSigningOutAction } from "../../store/actions/auth";
 

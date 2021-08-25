@@ -1,7 +1,7 @@
 import { CircularProgress, Container } from "@material-ui/core";
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
-import useStyles from "./Styles";
+import useStyles from "./styles";
 
 const Spinner: React.FC = () => {
   const classes = useStyles();

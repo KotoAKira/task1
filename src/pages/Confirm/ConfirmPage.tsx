@@ -3,7 +3,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch } from "react-redux";
-import useStyles from "./style";
+import useStyles from "./styles";
 import { asyncSigningOutAction } from "../../store/actions/auth";
 
 // eslint-disable-next-line import/prefer-default-export

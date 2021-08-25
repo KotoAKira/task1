@@ -1,4 +1,4 @@
-export default interface MainContentI {
+export default interface MainContent {
   title: string;
   content: string;
   label: string;

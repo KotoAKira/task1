@@ -1,10 +1,10 @@
-import ColumnI from "./Column";
-import UserI from "./User";
+import Column from "./Column";
+import User from "./User";
 
-export default interface BoardI {
+export default interface Board {
   boardName: string;
   managerUid: string;
   managerName: string;
-  columns?: Array<ColumnI>;
-  users?: Array<UserI>;
+  columns?: Array<Column>;
+  users?: Array<User>;
 }

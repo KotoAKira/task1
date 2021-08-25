@@ -2,7 +2,7 @@ import { Typography, Container, Button } from "@material-ui/core";
 
 import React from "react";
 import { useHistory } from "react-router-dom";
-import useStyles from "./Styles";
+import useStyles from "./styles";
 
 const MainPage: React.FC = function () {
   const history = useHistory();

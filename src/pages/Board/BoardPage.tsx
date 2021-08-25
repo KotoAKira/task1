@@ -5,7 +5,7 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import useStyles from "./Styles";
+import useStyles from "./styles";
 import {
   selectCurrentBoard,
   selectCurrentBoardId,

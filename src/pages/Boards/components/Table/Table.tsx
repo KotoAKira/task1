@@ -4,7 +4,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
-import useStyles from "./Styles";
+import useStyles from "./styles";
 import AddBoardDialog from "../AddBoardModal/AddBoardModal";
 import {
   loadingProcess,

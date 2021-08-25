@@ -1,7 +1,7 @@
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import React, { ReactElement } from "react";
-import useStyles from "./Styles";
+import useStyles from "./styles";
 import ItemProps from "./types";
 
 const Item = ({
