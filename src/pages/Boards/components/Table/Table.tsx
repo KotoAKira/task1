@@ -18,6 +18,7 @@ import {
   successSetCurrentBoardAction,
 } from "../../../../store/actions/boards";
 import Spinner from "../../../../components/Spinner/Spinner";
+import { selectUid, selectUserName } from "../../../../store/selectors/auth";
 
 const Table = function (): ReactElement {
   const classes = useStyles();
@@ -25,9 +26,9 @@ const Table = function (): ReactElement {
   const dispatch = useDispatch();
   const boards = useSelector(selectBoards);
   const load = useSelector(loadingProcess);
-  const [userName, setUserName] = useState("");
-  const [userUid, setUserUid] = useState("");
-  // modal
+  const userUid = useSelector(selectUid);
+  const userName = useSelector(selectUserName);
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -61,14 +62,6 @@ const Table = function (): ReactElement {
     };
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUserUid(user.uid);
-        fetchUserName().then((e) => {
-          setUserName(e.data()?.name.concat(" ", e.data()?.secondName));
-        });
-      }
-    });
     dispatch(asyncFetchBoardsAction());
   }, []);
 

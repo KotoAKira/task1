@@ -1,4 +1,5 @@
 import { createAction } from "redux-actions";
+import firebase from "firebase";
 
 export enum AuthActionTypes {
   SIGNING_IN = "[Auth] SIGNING_IN",
@@ -23,7 +24,8 @@ export enum AuthActionTypes {
 
 export const signingInAction = createAction(AuthActionTypes.SIGNING_IN);
 export const successSignInAction = createAction(
-  AuthActionTypes.SUCCESS_SIGN_IN
+  AuthActionTypes.SUCCESS_SIGN_IN,
+  (payload: { user: firebase.User; userName: string }) => payload
 );
 export const errorSignInAction = createAction(
   AuthActionTypes.ERROR_SIGN_IN,
@@ -70,7 +72,8 @@ export const authenticatingAction = createAction(
   AuthActionTypes.AUTHENTICATING
 );
 export const successAuthenticatingAction = createAction(
-  AuthActionTypes.SUCCESS_AUTHENTICATING
+  AuthActionTypes.SUCCESS_AUTHENTICATING,
+  (payload: { user: firebase.User; userName: string }) => payload
 );
 export const errorAuthenticatingAction = createAction(
   AuthActionTypes.ERROR_AUTHENTICATING

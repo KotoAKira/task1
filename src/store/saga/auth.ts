@@ -1,5 +1,6 @@
 import { call, ForkEffect, put, takeEvery } from "redux-saga/effects";
 import { AnyAction } from "redux";
+import firebase from "firebase";
 import {
   AuthActionTypes,
   errorRegisterAction,
@@ -13,6 +14,7 @@ import {
   successSignOutAction,
 } from "../actions/auth";
 import { register, signIn, signOut } from "../../services/auth";
+import { fetchUserName } from "../../services/boards";
 
 function* signInWorker(action: AnyAction) {
   try {
@@ -20,7 +22,9 @@ function* signInWorker(action: AnyAction) {
     const { email, password, history } = payload;
     yield put(signingInAction());
     const { user } = yield call(signIn, email, password);
-    yield put(successSignInAction());
+    const e: firebase.firestore.DocumentSnapshot = yield call(fetchUserName);
+    const userName = e.data()?.name.concat(" ", e.data()?.secondName);
+    yield put(successSignInAction({ user, userName }));
     if (user) {
       if (!user.emailVerified) {
         history.push("/confirm");
