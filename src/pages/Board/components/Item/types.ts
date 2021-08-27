@@ -18,14 +18,6 @@ interface ItemProps {
   ) => () => void;
   columnIndex: number;
   itemIndex: number;
-  deleteItemHandler: (
-    column: ColumnI,
-    columnIndex: number,
-    item: ItemI,
-    board: BoardI,
-    boardId: string,
-    dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>
-  ) => () => void;
   board: BoardI;
   boardId: string;
   dispatch: Dispatch<Action<{ board: BoardI; boardId: string }>>;

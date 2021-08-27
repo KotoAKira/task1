@@ -3,6 +3,7 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import React, { ReactElement } from "react";
 import useStyles from "./styles";
 import ItemProps from "./types";
+import { deleteItemHandler } from "../../helpers/DeleteHandlers";
 
 const Item = ({
   column,
@@ -12,7 +13,6 @@ const Item = ({
   editItemClickHandler,
   columnIndex,
   itemIndex,
-  deleteItemHandler,
   board,
   boardId,
   dispatch,

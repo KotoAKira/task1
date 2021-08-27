@@ -7,10 +7,8 @@ import dragStartType from "../../../types/DragStartType";
 import BoardI from "../../../interfaces/Board";
 import ItemI from "../../../interfaces/Item";
 
-export function dragColumnOverHandler(): (
-  e: React.DragEvent<HTMLElement>
-) => void {
-  return (e: React.DragEvent<HTMLElement>) => e.preventDefault();
+export function dragColumnOverHandler(e: React.DragEvent<HTMLElement>): void {
+  e.preventDefault();
 }
 
 export function dragColumnStartHandler(

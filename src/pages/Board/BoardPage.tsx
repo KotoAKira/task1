@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { Button, Container, Typography } from "@material-ui/core";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
@@ -11,24 +8,12 @@ import {
   selectCurrentBoardId,
 } from "../../store/selectors/boards";
 import {
-  deleteColumnHandler,
-  deleteItemHandler,
-} from "./helpers/DeleteHandlers";
-import Item from "./components/Item/Item";
-import {
   addColumnHandler,
   addItemHandler,
   editBoardNameHandler,
   editColumnNameHandler,
   editItemHandler,
 } from "./helpers/BoardDialogHandlers";
-import {
-  dragColumnOverHandler,
-  dragColumnStartHandler,
-  dragItemStartHandler,
-  dropColumnHandler,
-  dropItemHandler,
-} from "./helpers/DragHandlers";
 import ColumnI from "../../interfaces/Column";
 import dragStartType from "../../types/DragStartType";
 import ItemI from "../../interfaces/Item";
@@ -41,6 +26,7 @@ import {
   editColumnNameContent,
   editItemContent,
 } from "./consts/consts";
+import Column from "./components/Column/Column";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
@@ -162,82 +148,24 @@ const BoardPage: React.FC = function () {
           <div className={classes.columnsWrapper}>
             {board.columns &&
               board.columns.map((column, columnIndex) => (
-                <div
-                  draggable
-                  onDragStart={dragColumnStartHandler(
-                    column,
-                    setCurrentDragColumn,
-                    setDragType
-                  )}
-                  onDrop={dropColumnHandler(
-                    column,
-                    currentDragColumn,
-                    board,
-                    dragType,
-                    currentDragItem,
-                    currentDragColumnOfItem,
-                    boardId,
-                    dispatch
-                  )}
-                  onDragOver={dragColumnOverHandler()}
-                  className={classes.column}
-                  key={column.id}
-                >
-                  <div className={classes.columnTitle}>
-                    {column.columnTitle}
-                  </div>
-                  <EditOutlinedIcon
-                    className={classes.editColumnIcon}
-                    onClick={editColumnNameClickHandler(columnIndex, column)}
-                  />
-                  <DeleteOutlineIcon
-                    className={classes.deleteColumnIcon}
-                    onClick={deleteColumnHandler(
-                      column,
-                      board,
-                      boardId,
-                      dispatch
-                    )}
-                  />
-                  <AddIcon
-                    className={classes.addIcon}
-                    onClick={addItemClickHandler(columnIndex, column)}
-                  />
-                  <div className={classes.columnContent}>
-                    {column.items &&
-                      column.items.map((item, itemIndex) => (
-                        <Item
-                          key={item.id}
-                          column={column}
-                          columnIndex={columnIndex}
-                          item={item}
-                          itemIndex={itemIndex}
-                          board={board}
-                          dispatch={dispatch}
-                          boardId={boardId}
-                          editItemClickHandler={editItemClickHandler}
-                          deleteItemHandler={deleteItemHandler}
-                          dragItemStartHandler={dragItemStartHandler(
-                            column,
-                            item,
-                            setCurrentDragColumnOfItem,
-                            setCurrentDragItem,
-                            setDragType
-                          )}
-                          dropItemHandler={dropItemHandler(
-                            column,
-                            item,
-                            currentDragColumnOfItem,
-                            currentDragItem,
-                            board,
-                            dragType,
-                            boardId,
-                            dispatch
-                          )}
-                        />
-                      ))}
-                  </div>
-                </div>
+                <Column
+                  addItemClickHandler={addItemClickHandler}
+                  board={board}
+                  boardId={boardId}
+                  column={column}
+                  columnIndex={columnIndex}
+                  editItemClickHandler={editItemClickHandler}
+                  dispatch={dispatch}
+                  currentDragColumnOfItem={currentDragColumnOfItem}
+                  currentDragItem={currentDragItem}
+                  dragType={dragType}
+                  editColumnNameClickHandler={editColumnNameClickHandler}
+                  setCurrentDragColumnOfItem={setCurrentDragColumnOfItem}
+                  setCurrentDragItem={setCurrentDragItem}
+                  setDragType={setDragType}
+                  setCurrentDragColumn={setCurrentDragColumn}
+                  currentDragColumn={currentDragColumn}
+                />
               ))}
           </div>
         </div>
