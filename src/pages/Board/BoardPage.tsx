@@ -7,26 +7,15 @@ import {
   selectCurrentBoard,
   selectCurrentBoardId,
 } from "../../store/selectors/boards";
-import {
-  addColumnHandler,
-  addItemHandler,
-  editBoardNameHandler,
-  editColumnNameHandler,
-  editItemHandler,
-} from "./helpers/BoardDialogHandlers";
 import ColumnI from "../../interfaces/Column";
-import dragStartType from "../../types/DragStartType";
 import ItemI from "../../interfaces/Item";
 import BoardDialog from "./components/BoardDialog/BoardDialog";
 import { showModal } from "../../store/actions/modal";
-import {
-  addColumnContent,
-  addItemContent,
-  editBoardNameContent,
-  editColumnNameContent,
-  editItemContent,
-} from "./consts/consts";
+import { addColumnContent, editBoardNameContent } from "./consts/consts";
 import Column from "./components/Column/Column";
+import addColumn from "./helpers/dialog/AddColumn";
+import { asyncUpdateBoardAction } from "../../store/actions/boards";
+import editBoardName from "./helpers/dialog/EditBoardName";
 
 const BoardPage: React.FC = function () {
   const classes = useStyles();
@@ -38,74 +27,40 @@ const BoardPage: React.FC = function () {
   const [currentDragColumn, setCurrentDragColumn] = useState<ColumnI | null>(
     null
   );
-  const [dragType, setDragType] = useState<dragStartType>(
-    dragStartType.dragItem
-  );
   const [currentDragColumnOfItem, setCurrentDragColumnOfItem] =
     useState<ColumnI | null>(null);
   const [currentDragItem, setCurrentDragItem] = useState<ItemI | null>(null);
 
+  const addColumnHandler = (columnTitle: string) => {
+    dispatch(
+      asyncUpdateBoardAction({ board: addColumn(board, columnTitle), boardId })
+    );
+  };
   const addColumnClickHandler = () => {
     dispatch(
       showModal({
         mainContent: addColumnContent,
-        handler: addColumnHandler(board, boardId, dispatch),
+        handler: addColumnHandler,
       })
     );
   };
 
-  const addItemClickHandler = (columnId: number, column: ColumnI) => () => {
+  const editBoardNameHandler = (boardName: string) => {
     dispatch(
-      showModal({
-        mainContent: addItemContent,
-        handler: addItemHandler(board, column, columnId, boardId, dispatch),
+      asyncUpdateBoardAction({
+        board: editBoardName(board, boardName),
+        boardId,
       })
     );
   };
-
   const editBoardNameClickHandler = () => {
     dispatch(
       showModal({
         mainContent: editBoardNameContent,
-        handler: editBoardNameHandler(board, boardId, dispatch),
+        handler: editBoardNameHandler,
       })
     );
   };
-
-  const editColumnNameClickHandler =
-    (columnId: number, column: ColumnI) => () => {
-      dispatch(
-        showModal({
-          mainContent: editColumnNameContent,
-          handler: editColumnNameHandler(
-            board,
-            column,
-            columnId,
-            boardId,
-            dispatch
-          ),
-        })
-      );
-    };
-
-  const editItemClickHandler =
-    (columnIndex: number, column: ColumnI, itemIndex: number, item: ItemI) =>
-    () => {
-      dispatch(
-        showModal({
-          mainContent: editItemContent,
-          handler: editItemHandler(
-            board,
-            column,
-            columnIndex,
-            item,
-            itemIndex,
-            boardId,
-            dispatch
-          ),
-        })
-      );
-    };
 
   if (!boardId) {
     return (
@@ -147,22 +102,15 @@ const BoardPage: React.FC = function () {
         <div>
           <div className={classes.columnsWrapper}>
             {board.columns &&
-              board.columns.map((column, columnIndex) => (
+              board.columns.map((column) => (
                 <Column
-                  addItemClickHandler={addItemClickHandler}
                   board={board}
                   boardId={boardId}
                   column={column}
-                  columnIndex={columnIndex}
-                  editItemClickHandler={editItemClickHandler}
-                  dispatch={dispatch}
                   currentDragColumnOfItem={currentDragColumnOfItem}
                   currentDragItem={currentDragItem}
-                  dragType={dragType}
-                  editColumnNameClickHandler={editColumnNameClickHandler}
                   setCurrentDragColumnOfItem={setCurrentDragColumnOfItem}
                   setCurrentDragItem={setCurrentDragItem}
-                  setDragType={setDragType}
                   setCurrentDragColumn={setCurrentDragColumn}
                   currentDragColumn={currentDragColumn}
                 />
