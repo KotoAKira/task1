@@ -24,7 +24,6 @@ import RegistrationPage from "../../pages/Registration/RegistrationPage";
 import BoardPage from "../../pages/Board/BoardPage";
 import Navbar from "../Navbar/Navbar";
 import AppLoading from "../AppLoading/AppLoading";
-import { fetchUserName } from "../../services/boards";
 
 const AppRouter: React.FC = function () {
   const history = useHistory();
@@ -45,14 +44,7 @@ const AppRouter: React.FC = function () {
             initializing: false,
             shouldConfirm: false,
           });
-          let userName = "";
-          fetchUserName()
-            .then((r) => {
-              userName = r.data()?.name.concat(" ", r.data()?.secondName);
-            })
-            .then(() =>
-              dispatch(successAuthenticatingAction({ user, userName }))
-            );
+          dispatch(successAuthenticatingAction());
         } else {
           setAuthState({
             authenticated: false,
