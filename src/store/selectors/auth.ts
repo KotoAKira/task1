@@ -21,10 +21,3 @@ export const selectAuthenticated = createSelector(
   authState,
   (state) => state.authenticated
 );
-
-export const selectUid = createSelector(authState, (state) => state.userUid);
-
-export const selectUserName = createSelector(
-  authState,
-  (state) => state.userName
-);
