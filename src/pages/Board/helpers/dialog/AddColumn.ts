@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
-export default function addColumn(board: BoardI, columnTitle: string): BoardI {
+export default function addColumn(board: Board, columnTitle: string): Board {
   return {
     ...board,
     columns: [...board.columns, { id: uuidv4(), columnTitle, items: [] }],

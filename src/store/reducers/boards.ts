@@ -1,11 +1,11 @@
 import { AnyAction } from "redux";
 import { handleActions } from "redux-actions";
 import { BoardActionTypes } from "../actions/boards";
-import BoardI from "../../interfaces/Board";
+import Board from "../../interfaces/Board";
 
 export interface State {
   boards: {
-    [id: string]: BoardI;
+    [id: string]: Board;
   };
   currentBoardId: string | null;
   isLoading: boolean;

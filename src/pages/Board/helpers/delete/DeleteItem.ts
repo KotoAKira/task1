@@ -1,10 +1,10 @@
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
 export default function deleteItem(
   columnId: string,
   itemId: string,
-  board: BoardI
-): BoardI {
+  board: Board
+): Board {
   return {
     ...board,
     columns: board.columns?.map((column) => {

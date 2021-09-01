@@ -7,8 +7,8 @@ import {
   selectCurrentBoard,
   selectCurrentBoardId,
 } from "../../store/selectors/boards";
-import ColumnI from "../../interfaces/Column";
-import ItemI from "../../interfaces/Item";
+import IColumn from "../../interfaces/Column";
+import Item from "../../interfaces/Item";
 import BoardDialog from "./components/BoardDialog/BoardDialog";
 import { showModal } from "../../store/actions/modal";
 import { addColumnContent, editBoardNameContent } from "./consts/consts";
@@ -24,12 +24,12 @@ const BoardPage: React.FC = function () {
   const boardId = useSelector(selectCurrentBoardId);
   const board = useSelector(selectCurrentBoard);
 
-  const [currentDragColumn, setCurrentDragColumn] = useState<ColumnI | null>(
+  const [currentDragColumn, setCurrentDragColumn] = useState<IColumn | null>(
     null
   );
   const [currentDragColumnOfItem, setCurrentDragColumnOfItem] =
-    useState<ColumnI | null>(null);
-  const [currentDragItem, setCurrentDragItem] = useState<ItemI | null>(null);
+    useState<IColumn | null>(null);
+  const [currentDragItem, setCurrentDragItem] = useState<Item | null>(null);
 
   const addColumnHandler = (columnTitle: string) => {
     dispatch(

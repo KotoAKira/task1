@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import BoardI from "../../interfaces/Board";
+import Board from "../../interfaces/Board";
 
 export enum BoardActionTypes {
   FETCH_BOARDS = "[Board] FETCH_BOARDS",
@@ -30,7 +30,7 @@ export enum BoardActionTypes {
 export const fetchBoardsAction = createAction(BoardActionTypes.FETCH_BOARDS);
 export const successFetchBoardsAction = createAction(
   BoardActionTypes.SUCCESS_FETCH_BOARDS,
-  (payload: { [p: string]: BoardI }) => payload
+  (payload: { [p: string]: Board }) => payload
 );
 export const errorFetchBoardsAction = createAction(
   BoardActionTypes.ERROR_FETCH_BOARDS
@@ -42,7 +42,7 @@ export const asyncFetchBoardsAction = createAction(
 export const createBoardAction = createAction(BoardActionTypes.CREATE_BOARD);
 export const successCreateBoardAction = createAction(
   BoardActionTypes.SUCCESS_CREATE_BOARD,
-  (payload: { board: BoardI; id: string | null }) => payload
+  (payload: { board: Board; id: string | null }) => payload
 );
 export const errorCreateBoardAction = createAction(
   BoardActionTypes.ERROR_CREATE_BOARD
@@ -80,12 +80,12 @@ export const errorSetCurrentBoardAction = createAction(
 export const updateBoardAction = createAction(BoardActionTypes.UPDATE_BOARD);
 export const successUpdateBoardAction = createAction(
   BoardActionTypes.SUCCESS_UPDATE_BOARD,
-  (payload: { id: string; board: BoardI }) => payload
+  (payload: { id: string; board: Board }) => payload
 );
 export const errorUpdateBoardAction = createAction(
   BoardActionTypes.ERROR_UPDATE_BOARD
 );
 export const asyncUpdateBoardAction = createAction(
   BoardActionTypes.ASYNC_UPDATE_BOARD,
-  (payload: { board: BoardI; boardId: string }) => payload
+  (payload: { board: Board; boardId: string }) => payload
 );

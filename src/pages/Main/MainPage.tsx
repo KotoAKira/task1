@@ -1,5 +1,4 @@
 import { Typography, Container, Button } from "@material-ui/core";
-
 import React from "react";
 import { useHistory } from "react-router-dom";
 import useStyles from "./styles";

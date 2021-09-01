@@ -1,10 +1,10 @@
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
 export default function dropColumn(
   currentColumnId: string,
   toColumnId: string,
-  board: BoardI
-): BoardI {
+  board: Board
+): Board {
   const { columns } = board;
   const columnsCopy = [...columns];
   const newColumns = columnsCopy.map((column) => {

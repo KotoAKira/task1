@@ -1,9 +1,6 @@
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
-export default function editBoardName(
-  board: BoardI,
-  boardName: string
-): BoardI {
+export default function editBoardName(board: Board, boardName: string): Board {
   return {
     ...board,
     boardName,

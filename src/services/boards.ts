@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import BoardI from "../interfaces/Board";
+import Board from "../interfaces/Board";
 
 export const fetchUserName =
   (): Promise<firebase.firestore.DocumentSnapshot> => {
@@ -24,5 +24,5 @@ export const fetchBoards = (): Promise<firebase.firestore.QuerySnapshot> =>
 export const deleteBoard = (boardId: string): Promise<void> =>
   firebase.firestore().collection("boards").doc(boardId).delete();
 
-export const updateBoard = (boardId: string, board: BoardI): Promise<void> =>
+export const updateBoard = (boardId: string, board: Board): Promise<void> =>
   firebase.firestore().collection("boards").doc(boardId).set(board);

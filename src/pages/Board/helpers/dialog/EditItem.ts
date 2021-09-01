@@ -1,11 +1,11 @@
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
 export default function editItem(
-  board: BoardI,
+  board: Board,
   handlerColumnId: string,
   handlerItemId: string,
   itemText: string
-): BoardI {
+): Board {
   return {
     ...board,
     columns: board.columns.map((column) => {

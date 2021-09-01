@@ -1,10 +1,10 @@
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
 export default function editColumnName(
-  board: BoardI,
+  board: Board,
   columnId: string,
   columnTitle: string
-): BoardI {
+): Board {
   return {
     ...board,
     columns: board.columns.map((column) => {

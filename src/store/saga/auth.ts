@@ -21,18 +21,10 @@ function* signInWorker(action: AnyAction) {
     const { payload } = action;
     const { email, password, history } = payload;
     yield put(signingInAction());
-    const { user } = yield call(signIn, email, password);
+    const { user } = yield call(signIn, email, password, history);
     const e: firebase.firestore.DocumentSnapshot = yield call(fetchUserName);
     const userName = e.data()?.name.concat(" ", e.data()?.secondName);
     yield put(successSignInAction({ user, userName }));
-    if (user) {
-      if (!user.emailVerified) {
-        history.push("/confirm");
-        user.sendEmailVerification();
-      } else {
-        history.push("/");
-      }
-    }
   } catch (e) {
     yield put(errorSignInAction(e.message));
   }

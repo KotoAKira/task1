@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import BoardI from "../../../../interfaces/Board";
+import Board from "../../../../interfaces/Board";
 
 export default function addItem(
-  board: BoardI,
+  board: Board,
   handlerColumnId: string,
   text: string
-): BoardI {
+): Board {
   return {
     ...board,
     columns: board.columns.map((column) => {

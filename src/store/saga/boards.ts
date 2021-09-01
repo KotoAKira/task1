@@ -22,7 +22,7 @@ import {
   fetchBoards,
   updateBoard,
 } from "../../services/boards";
-import BoardI from "../../interfaces/Board";
+import Board from "../../interfaces/Board";
 
 function* createBoardWorker(action: AnyAction) {
   try {
@@ -45,10 +45,10 @@ function* fetchBoardsWorker() {
   try {
     yield put(fetchBoardsAction());
     const res: firebase.firestore.QuerySnapshot = yield call(fetchBoards);
-    const obj: { [p: string]: BoardI } = Object.fromEntries(
+    const obj: { [p: string]: Board } = Object.fromEntries(
       res.docs.map((doc) => [
         doc.id,
-        <BoardI>{
+        <Board>{
           boardName: doc.data().boardName,
           managerName: doc.data().managerName,
           managerUid: doc.data().managerUid,

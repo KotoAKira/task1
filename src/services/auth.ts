@@ -4,9 +4,13 @@ export const signOut = (): Promise<void> => firebase.auth().signOut();
 
 export const signIn = (
   email: string,
-  password: string
+  password: string,
+  history: any
 ): Promise<firebase.auth.UserCredential> =>
-  firebase.auth().signInWithEmailAndPassword(email, password);
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(() => history.push("/"));
 
 export const register = (
   email: string,
